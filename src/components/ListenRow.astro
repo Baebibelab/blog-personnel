@@ -1,0 +1,64 @@
+---
+import type { Listen } from '../lib/jellyfin';
+import { formatDate, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  listen: Listen;
+}
+
+const { lang, listen } = Astro.props;
+---
+
+<div class="listen">
+  {
+    listen.cover ? (
+      <img src={listen.cover} alt="" width="56" height="56" loading="lazy" />
+    ) : (
+      <div class="placeholder" aria-hidden="true">♪</div>
+    )
+  }
+  <div>
+    <strong>{listen.title}</strong>
+    <div class="muted small">
+      {listen.artist}
+      {listen.album && <> · <em>{listen.album}</em></>}
+    </div>
+    {
+      listen.playedAt && (
+        <time class="muted small" datetime={listen.playedAt.toISOString()}>
+          {formatDate(listen.playedAt, lang)}
+        </time>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .listen {
+    display: flex;
+    gap: 0.9rem;
+    align-items: center;
+  }
+
+  img,
+  .placeholder {
+    width: 56px;
+    height: 56px;
+    flex: none;
+    border-radius: 6px;
+    object-fit: cover;
+    background: var(--surface);
+  }
+
+  .placeholder {
+    display: grid;
+    place-items: center;
+    color: var(--muted);
+    font-size: 1.4rem;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+</style>

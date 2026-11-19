@@ -1,0 +1,56 @@
+---
+import { formatDate, t, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  date: Date;
+  updated?: Date;
+  tags?: string[];
+  project?: { title: string; href: string };
+  link?: string;
+}
+
+const { lang, title, date, updated, tags = [], project, link } = Astro.props;
+---
+
+<header>
+  <h1>{title}</h1>
+  <p class="meta muted small">
+    <time datetime={date.toISOString()}>{formatDate(date, lang)}</time>
+    {
+      updated && (
+        <span>
+          · {t(lang, 'post.updated')} <time datetime={updated.toISOString()}>{formatDate(updated, lang)}</time>
+        </span>
+      )
+    }
+    {project && <a class="tag" href={project.href}>{project.title}</a>}
+    {tags.map((tag) => <span class="tag">#{tag}</span>)}
+  </p>
+  {
+    link && (
+      <p class="link">
+        {t(lang, 'post.link')} : <a href={link}>{new URL(link).hostname}</a>
+      </p>
+    )
+  }
+</header>
+
+<style>
+  header {
+    margin-bottom: 2rem;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
+    margin: 0;
+  }
+
+  .link {
+    margin: 0.75rem 0 0;
+  }
+</style>

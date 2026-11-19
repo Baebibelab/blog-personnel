@@ -1,0 +1,76 @@
+---
+import { formatDate, t, type Lang } from '../i18n/ui';
+
+export interface PostItem {
+  title: string;
+  href: string;
+  date: Date;
+  description?: string;
+  tags?: string[];
+  draft?: boolean;
+}
+
+interface Props {
+  lang: Lang;
+  items: PostItem[];
+}
+
+const { lang, items } = Astro.props;
+---
+
+{
+  items.length === 0 ? (
+    <p class="muted">{t(lang, 'empty')}</p>
+  ) : (
+    <ul class="posts">
+      {items.map((item) => (
+        <li>
+          <time datetime={item.date.toISOString()}>{formatDate(item.date, lang)}</time>
+          <div>
+            <a href={item.href}>{item.title}</a>
+            {item.draft && <span class="tag">draft</span>}
+            {item.description && <p class="muted small">{item.description}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 0.25rem 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  time {
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.1rem;
+  }
+
+  p {
+    margin: 0.15rem 0 0;
+  }
+
+  .tag {
+    margin-left: 0.5rem;
+  }
+
+  @media (max-width: 34rem) {
+    li {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>

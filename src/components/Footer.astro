@@ -1,0 +1,39 @@
+---
+import { href, type Lang } from '../i18n/ui';
+import { site } from '../site.config';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© {new Date().getFullYear()} {site.author}</span>
+    <span aria-hidden="true">·</span>
+    <a href={href(lang, 'rss.xml')}>RSS</a>
+    <span aria-hidden="true">·</span>
+    <a href={site.github}>GitHub</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0 2rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  a {
+    color: var(--muted);
+  }
+</style>
