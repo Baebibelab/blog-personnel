@@ -2,7 +2,7 @@
 
 Mon jardin numérique, en français et en anglais : journal de bord de mes projets, notes, étagère (livres, films, albums) et écoutes Jellyfin.
 
-Construit avec [Astro](https://astro.build), hébergé sur GitHub Pages : <https://baebibelab.github.io/blog-personnel/>
+Construit avec [Astro](https://astro.build), hébergé sur GitHub Pages : <https://romainbeal.fr>
 
 ## Lancer le site en local
 
@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-Le site s'ouvre sur <http://localhost:4321/blog-personnel/>. En local, les brouillons (`draft: true`) sont visibles. En ligne, ils sont masqués.
+Le site s'ouvre sur <http://localhost:4321/>. En local, les brouillons (`draft: true`) sont visibles. En ligne, ils sont masqués.
 
 ## Où écrire
 
@@ -76,6 +76,16 @@ Chaque push sur `main` déploie le site.
 
 Une seule fois : dans le dépôt GitHub, *Settings › Pages › Build and deployment › Source*, choisir **GitHub Actions**.
 
-### Avec un nom de domaine
+### Nom de domaine
 
-Dans `astro.config.mjs`, mettre `site: 'https://mondomaine.fr'` et `base: '/'`, ajouter un fichier `public/CNAME` qui contient le domaine, puis le déclarer dans *Settings › Pages › Custom domain*.
+Le site est servi sur `romainbeal.fr` (`site` et `base` dans `astro.config.mjs`). Le domaine est déclaré dans *Settings › Pages › Custom domain*. Pas besoin de fichier `public/CNAME` : il ne sert pas quand le site est déployé par GitHub Actions.
+
+Zone DNS chez OVH :
+
+| Sous-domaine | Type | Cible |
+|---|---|---|
+| (vide) | A | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
+| (vide) | AAAA | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
+| `www` | CNAME | `baebibelab.github.io.` |
+
+Les enregistrements MX et TXT (SPF) servent à l'e-mail : ne pas y toucher.
