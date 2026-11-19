@@ -53,11 +53,13 @@ Un billet peut n'exister que dans une langue. Le lien « English / Français » 
 
 ## Réglages
 
-- **Ton nom** : `src/site.config.ts`.
+- **Ton nom** et l'activation de la page Écoutes : `src/site.config.ts`.
 - **Textes de l'interface** (menus, intros des rubriques) : `src/i18n/ui.ts`.
 - **Couleurs et typographie** : `src/styles/global.css`.
 
 ## Écoutes Jellyfin
+
+**La page est désactivée pour l'instant** (`listening: false` dans `src/site.config.ts`) : elle n'apparaît ni dans le menu ni sur l'accueil, et `/fr/listening/` n'est pas générée. Pour la réactiver, configure les étapes ci-dessous puis passe `listening` à `true`.
 
 La page Écoutes affiche tes dernières écoutes. Elles sont récupérées **au moment de la construction du site** : la clé d'accès et l'adresse de ton serveur n'apparaissent jamais dans les pages publiées. Les pochettes sont intégrées dans la page.
 

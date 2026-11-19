@@ -10,6 +10,6 @@ translationKey: pourquoi-ce-site
 
 This site is mostly for me: a place to keep track of what I build, what I learn and what I enjoy.
 
-It holds a **devlog** of my projects, currently [Randori Road](../../projects/randori-road/), a judo deckbuilder, and [Andia](../../projects/andia/), an iOS music app for Jellyfin. Alongside it: loose **notes**, a **shelf** for books, films and albums, and what I have been **listening** to lately.
+It holds a **devlog** of my projects, currently [Randori Road](../../projects/randori-road/), a judo deckbuilder, and [Andia](../../projects/andia/), an iOS music app for Jellyfin. Alongside it: loose **notes** and a **shelf** for books, films and albums.
 
 Nothing here is set in stone: notes grow, projects move forward, and so does the site.

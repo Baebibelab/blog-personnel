@@ -14,7 +14,7 @@ const nav: { key: UiKey; path: string }[] = [
   { key: 'nav.notes', path: 'notes' },
   { key: 'nav.projects', path: 'projects' },
   { key: 'nav.shelf', path: 'shelf' },
-  { key: 'nav.listening', path: 'listening' },
+  ...(site.listening ? [{ key: 'nav.listening' as UiKey, path: 'listening' }] : []),
   { key: 'nav.about', path: 'about' },
 ];
 
