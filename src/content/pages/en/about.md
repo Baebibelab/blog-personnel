@@ -5,7 +5,7 @@ description: Who I am and what I do.
 
 <!-- To do: write this in your own words. -->
 
-My name is **First Last**.
+My name is **Romain Beal**.
 
 ## What I do
 

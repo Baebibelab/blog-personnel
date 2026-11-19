@@ -6,4 +6,4 @@ tags: [web, astro]
 translationKey: astro-pour-ce-site
 ---
 
-This site is built with Astro: Markdown for writing, static pages as output, and almost no JavaScript in the browser. It is hosted for free on GitHub Pages and rebuilds every night to refresh my Jellyfin listening history.
+This site is built with Astro: Markdown for writing, static pages as output, and almost no JavaScript in the browser. It is hosted for free on GitHub Pages.

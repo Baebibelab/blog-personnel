@@ -3,8 +3,11 @@ import Base from '../../../layouts/Base.astro';
 import ListenRow from '../../../components/ListenRow.astro';
 import { formatDate, langs, t, type Lang } from '../../../i18n/ui';
 import { getRecentListens } from '../../../lib/jellyfin';
+import { site } from '../../../site.config';
 
 export function getStaticPaths() {
+  // Page désactivée tant que site.listening vaut false.
+  if (!site.listening) return [];
   return langs.map((lang) => ({ params: { lang } }));
 }
 
