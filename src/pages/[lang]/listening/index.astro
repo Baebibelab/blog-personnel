@@ -1,0 +1,47 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ListenRow from '../../../components/ListenRow.astro';
+import { formatDate, langs, t, type Lang } from '../../../i18n/ui';
+import { getRecentListens } from '../../../lib/jellyfin';
+
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const listening = await getRecentListens();
+---
+
+<Base lang={lang} title={t(lang, 'listening.title')} description={t(lang, 'listening.intro')}>
+  <h1>{t(lang, 'listening.title')}</h1>
+  <p class="lead">{t(lang, 'listening.intro')}</p>
+
+  {
+    listening && listening.items.length > 0 ? (
+      <>
+        <ul>
+          {listening.items.map((listen) => (
+            <li>
+              <ListenRow lang={lang} listen={listen} />
+            </li>
+          ))}
+        </ul>
+        <p class="muted small">
+          {t(lang, 'listening.updated')} {formatDate(listening.fetchedAt, lang)}
+        </p>
+      </>
+    ) : (
+      <p class="muted">{t(lang, 'listening.unavailable')}</p>
+    )
+  }
+</Base>
+
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+</style>

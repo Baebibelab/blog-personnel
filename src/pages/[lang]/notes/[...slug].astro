@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PostHeader from '../../../components/PostHeader.astro';
+import { href, otherLang, t, type Lang } from '../../../i18n/ui';
+import { entryLang, entrySlug, findTranslation } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('notes', ({ data }) => import.meta.env.DEV || !data.draft);
+  return entries.map((entry) => ({
+    params: { lang: entryLang(entry.id), slug: entrySlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const { Content } = await render(entry);
+
+const other = otherLang(lang);
+const translation = await findTranslation('notes', entry, other);
+const altHref = translation ? href(other, 'notes', entrySlug(translation.id)) : href(other, 'notes');
+---
+
+<Base lang={lang} title={entry.data.title} altHref={altHref}>
+  <article>
+    <PostHeader
+      lang={lang}
+      title={entry.data.title}
+      date={entry.data.date}
+      updated={entry.data.updated}
+      tags={entry.data.tags}
+      link={entry.data.link}
+    />
+    <div class="prose"><Content /></div>
+  </article>
+  <hr />
+  <p><a href={href(lang, 'notes')}>← {t(lang, 'post.backTo')} {t(lang, 'notes.title')}</a></p>
+</Base>

@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { href, t } from '../i18n/ui';
+---
+
+<Base lang="fr" title={t('fr', 'notFound.title')} altHref={href('en')}>
+  <h1>{t('fr', 'notFound.title')}</h1>
+  <p>{t('fr', 'notFound.text')} <a href={href('fr')}>{t('fr', 'nav.home')}</a></p>
+  <p lang="en" class="muted">
+    {t('en', 'notFound.text')} <a href={href('en')}>{t('en', 'nav.home')}</a>
+  </p>
+</Base>

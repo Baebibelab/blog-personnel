@@ -1,0 +1,19 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { langs, type Lang } from '../../../i18n/ui';
+
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const page = await getEntry('pages', `${lang}/about`);
+if (!page) throw new Error(`Page manquante : src/content/pages/${lang}/about.md`);
+const { Content } = await render(page);
+---
+
+<Base lang={lang} title={page.data.title} description={page.data.description}>
+  <h1>{page.data.title}</h1>
+  <div class="prose"><Content /></div>
+</Base>

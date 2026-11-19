@@ -1,0 +1,89 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PostList from '../../../components/PostList.astro';
+import { href, otherLang, t, type Lang } from '../../../i18n/ui';
+import { entryLang, entrySlug, getJournal } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((entry) => ({
+    params: { lang: entryLang(entry.id), slug: entrySlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const { Content } = await render(entry);
+const { data } = entry;
+
+const other = otherLang(lang);
+const translation = (await getCollection('projects')).find(
+  (p) => entryLang(p.id) === other && p.data.key === data.key,
+);
+const altHref = translation
+  ? href(other, 'projects', entrySlug(translation.id))
+  : href(other, 'projects');
+
+const related = (await getJournal(lang)).filter((e) => e.data.project === data.key);
+
+const links = [
+  data.links.site && { label: t(lang, 'projects.site'), url: data.links.site },
+  data.links.appStore && { label: t(lang, 'projects.appStore'), url: data.links.appStore },
+  data.links.repo && { label: t(lang, 'projects.repo'), url: data.links.repo },
+].filter((l): l is { label: string; url: string } => !!l);
+---
+
+<Base lang={lang} title={data.title} description={data.tagline} altHref={altHref}>
+  <article>
+    <header>
+      <h1>{data.title}</h1>
+      <p class="lead">{data.tagline}</p>
+      <p class="meta small">
+        <span class="tag">{t(lang, `status.${data.status}`)}</span>
+        {data.platform && <span class="muted">{data.platform}</span>}
+        {data.tech.length > 0 && <span class="muted">· {data.tech.join(' · ')}</span>}
+      </p>
+      {
+        links.length > 0 && (
+          <p class="links">
+            {links.map((l) => (
+              <a href={l.url}>{l.label} ↗</a>
+            ))}
+          </p>
+        )
+      }
+    </header>
+    <div class="prose"><Content /></div>
+  </article>
+
+  <section>
+    <h2>{t(lang, 'projects.related')}</h2>
+    <PostList
+      lang={lang}
+      items={related.map((e) => ({
+        title: e.data.title,
+        href: href(lang, 'journal', entrySlug(e.id)),
+        date: e.data.date,
+        description: e.data.description,
+        draft: e.data.draft,
+      }))}
+    />
+  </section>
+</Base>
+
+<style>
+  header {
+    margin-bottom: 2rem;
+  }
+
+  .meta,
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.9rem;
+    margin: 0.5rem 0 0;
+  }
+</style>

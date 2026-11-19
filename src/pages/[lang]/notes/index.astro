@@ -1,0 +1,27 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PostList from '../../../components/PostList.astro';
+import { href, langs, t, type Lang } from '../../../i18n/ui';
+import { entrySlug, getNotes } from '../../../lib/content';
+
+export function getStaticPaths() {
+  return langs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const entries = await getNotes(lang);
+---
+
+<Base lang={lang} title={t(lang, 'notes.title')} description={t(lang, 'notes.intro')}>
+  <h1>{t(lang, 'notes.title')}</h1>
+  <p class="lead">{t(lang, 'notes.intro')}</p>
+  <PostList
+    lang={lang}
+    items={entries.map((e) => ({
+      title: e.data.title,
+      href: href(lang, 'notes', entrySlug(e.id)),
+      date: e.data.updated ?? e.data.date,
+      draft: e.data.draft,
+    }))}
+  />
+</Base>
