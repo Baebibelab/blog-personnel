@@ -9,4 +9,4 @@ rating: 4 # note sur 5, facultatif
 finished: 2026-11-19 # date à laquelle tu l'as terminé (ou lu le dernier tome) ; 2025-05 ou 2015 si tu ne connais que le mois ou l'année
 review: Ton avis en deux ou trois lignes. # facultatif
 cover: ./covers/titre-de-l-oeuvre.jpg # image à droite, à mettre dans src/content/shelf/covers/, facultatif
-# effect: papercut # effet spécial sur la couverture (papercut : saccades façon papier découpé ; elastic : étirement façon caoutchouc ; bullets : impacts de balle), facultatif
+# effect: papercut # effet spécial sur la couverture (papercut : saccades façon papier découpé ; elastic : étirement façon caoutchouc ; bullets : impacts de balle ; slash : coupée en deux), facultatif

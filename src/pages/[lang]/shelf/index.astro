@@ -114,6 +114,21 @@ const stars = (n: number) => {
                             aria-hidden="true"
                           />
                         ))}
+                      {/* Couverture tranchée : une copie de la moitié haute, posée sur l'image,
+                          qui s'en détache au survol, et le trait de lame. */}
+                      {data.effect === 'slash' && (
+                        <>
+                          <Image
+                            class="cover slice-top"
+                            src={data.cover}
+                            alt=""
+                            width={160}
+                            loading="lazy"
+                            aria-hidden="true"
+                          />
+                          <span class="slash" aria-hidden="true" />
+                        </>
+                      )}
                     </span>
                   )}
                 </li>
@@ -449,6 +464,93 @@ const stars = (n: number) => {
     100% {
       opacity: 0;
       transform: scale(1.4);
+    }
+  }
+
+  /* Effet « tranchée » (Claymore) : au survol, un trait de lame traverse la couverture en
+     diagonale, puis la moitié haute glisse et se décale. La coupe va de 70 % de la hauteur
+     à gauche à 30 % à droite. Quand la souris s'en va, les deux morceaux se recollent. */
+  [data-effect='slash'] {
+    overflow: visible;
+  }
+
+  [data-effect='slash'] .cover {
+    border-radius: 4px;
+    transition:
+      transform 0.3s ease-in,
+      clip-path 0s 0.3s;
+  }
+
+  /* Au repos, la découpe couvre toute l'image. Elle a le même nombre de points que la
+     découpe du survol : sans ça, le navigateur ne respecte pas le délai et l'image entière
+     réapparaît avant que la moitié haute soit revenue, ce qui montre un doublon. */
+  [data-effect='slash'] .cover:not(.slice-top) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .slice-top {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 30%, 0 70%);
+  }
+
+  .slash {
+    position: absolute;
+    top: 50%;
+    left: -12%;
+    width: 124%;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    background: #fff;
+    box-shadow:
+      0 0 4px 1px rgb(255 255 255 / 0.9),
+      0 0 10px 2px rgb(190 215 255 / 0.7);
+    transform: rotate(-32deg) scaleX(0);
+    transform-origin: right center;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    /* L'ombre rectangulaire ne suivrait pas les morceaux : on la retire pendant la coupe. */
+    [data-effect='slash']:hover {
+      z-index: 1;
+      box-shadow: none;
+    }
+
+    /* La couverture d'origine devient la moitié basse, qui recule un peu. */
+    [data-effect='slash']:hover .cover:not(.slice-top) {
+      clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0 100%);
+      transform: translate(2px, 3px);
+      transition:
+        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) 0.14s,
+        clip-path 0s 0.14s;
+    }
+
+    /* La moitié haute glisse le long de la coupe et penche. */
+    [data-effect='slash']:hover .slice-top {
+      transform: translate(-7px, -3px) rotate(-5deg);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) 0.14s;
+    }
+
+    [data-effect='slash']:hover .slash {
+      animation: slash 0.4s ease-out both;
+    }
+  }
+
+  @keyframes slash {
+    0% {
+      opacity: 1;
+      transform: rotate(-32deg) scaleX(0);
+    }
+    35% {
+      opacity: 1;
+      transform: rotate(-32deg) scaleX(1);
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(-32deg) scaleX(1);
     }
   }
 
