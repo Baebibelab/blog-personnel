@@ -23,11 +23,12 @@ for (const item of items) {
 const icons = { book: '📖', manga: '📚', film: '🎬', series: '📺', album: '💿' } as const;
 const filters = ['all', 'book', 'manga', 'film', 'series', 'album'] as const;
 // Note arrondie à la demi-étoile : 3.5 donne trois étoiles pleines, une demie et une vide.
+// Renvoie le remplissage de chacune des cinq étoiles, pour pouvoir les animer une par une.
 const stars = (n: number) => {
   const halves = Math.round(n * 2);
-  const full = Math.floor(halves / 2);
-  const half = halves % 2 === 1;
-  return { full: '★'.repeat(full), half, empty: '☆'.repeat(5 - full - (half ? 1 : 0)) };
+  return [0, 1, 2, 3, 4].map((i) =>
+    halves >= 2 * (i + 1) ? 'full' : halves === 2 * i + 1 ? 'half' : 'empty',
+  );
 };
 ---
 
@@ -65,21 +66,20 @@ const stars = (n: number) => {
                       {data.year && ` (${data.year})`}
                     </span>
                     {data.progress && <span class="progress small">{data.progress}</span>}
-                    {data.rating !== undefined &&
-                      (() => {
-                        const { full, half, empty } = stars(data.rating);
-                        return (
-                          <span
-                            class="stars"
-                            role="img"
-                            aria-label={`${data.rating.toLocaleString(lang)}/5`}
-                          >
-                            {full}
-                            {half && <span class="half">☆</span>}
-                            {empty}
+                    {data.rating !== undefined && (
+                      <span
+                        class="stars"
+                        role="img"
+                        aria-label={`${data.rating.toLocaleString(lang)}/5`}
+                        data-stars
+                      >
+                        {stars(data.rating).map((fill, i) => (
+                          <span class:list={['star', fill]} style={`--i: ${i}`}>
+                            ☆
                           </span>
-                        );
-                      })()}
+                        ))}
+                      </span>
+                    )}
                     {data.review && <p>{data.review}</p>}
                     {/* Une année seule est déjà donnée par le titre de la section. */}
                     {data.finishedPrecision !== 'year' && (
@@ -110,24 +110,63 @@ const stars = (n: number) => {
 </Base>
 
 <script>
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Filtres. Quand le navigateur sait faire des « view transitions », les œuvres qui restent
+  // glissent jusqu'à leur nouvelle place, et les autres s'effacent au lieu de disparaître d'un coup.
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const works = document.querySelectorAll<HTMLElement>('[data-type]');
+  const years = document.querySelectorAll<HTMLElement>('[data-year]');
+  const animateFilters = 'startViewTransition' in document && !reduceMotion;
+
+  if (animateFilters) {
+    // Chaque élément animé a besoin d'un nom unique pour que le navigateur le suive.
+    works.forEach((li, i) => li.style.setProperty('view-transition-name', `work-${i}`));
+    years.forEach((section, i) =>
+      section.querySelector('h2')?.style.setProperty('view-transition-name', `year-${i}`),
+    );
+  }
+
+  const applyFilter = (filter: string | undefined) => {
+    works.forEach((li) => {
+      li.hidden = filter !== 'all' && li.dataset.type !== filter;
+    });
+    years.forEach((section) => {
+      section.hidden = !section.querySelector('[data-type]:not([hidden])');
+    });
+  };
+
   buttons.forEach((button) =>
     button.addEventListener('click', () => {
-      const filter = button.dataset.filter;
+      if (button.getAttribute('aria-pressed') === 'true') return;
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
-      document.querySelectorAll<HTMLElement>('[data-type]').forEach((li) => {
-        li.hidden = filter !== 'all' && li.dataset.type !== filter;
-      });
-      document.querySelectorAll<HTMLElement>('[data-year]').forEach((section) => {
-        section.hidden = !section.querySelector('[data-type]:not([hidden])');
-      });
+      const filter = button.dataset.filter;
+      if (animateFilters) document.startViewTransition(() => applyFilter(filter));
+      else applyFilter(filter);
     }),
   );
+
+  // Étoiles : elles s'allument une par une quand la note apparaît à l'écran (y compris
+  // quand un filtre fait apparaître une œuvre). Sans script, elles restent simplement allumées.
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-lit');
+          observer.unobserve(entry.target);
+        }),
+      { threshold: 1, rootMargin: '0px 0px -40px 0px' },
+    );
+    document.querySelectorAll<HTMLElement>('[data-stars]').forEach((rating) => {
+      rating.setAttribute('data-animate', '');
+      observer.observe(rating);
+    });
+  }
 
   // Couvertures en 3D : la couverture s'incline vers la souris, comme un livre qu'on sort du rayon.
   // Seulement avec une souris, et pas si le visiteur a demandé de réduire les animations.
   const canTilt = matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (canTilt && !reduceMotion) {
     const maxTilt = 14; // degrés
     document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((cover) => {
@@ -265,27 +304,88 @@ const stars = (n: number) => {
   .stars {
     display: block;
     color: var(--accent);
-    letter-spacing: 0.1em;
     font-size: 0.9rem;
   }
 
-  /* Demi-étoile : une étoile vide, recouverte à moitié par une étoile pleine. */
-  .half {
+  /* Chaque étoile est une étoile vide (☆), recouverte d'une étoile pleine (★) entière ou à moitié. */
+  .star {
     position: relative;
     display: inline-block;
-    letter-spacing: 0;
     margin-right: 0.1em;
   }
 
-  .half::before {
+  .star.full::before,
+  .star.half::before {
     content: '★';
     position: absolute;
     inset: 0;
-    width: 50%;
-    overflow: hidden;
+  }
+
+  .star.half::before {
+    clip-path: inset(0 50% 0 0);
+  }
+
+  /* Animation : le script pose data-animate (étoiles éteintes), puis is-lit quand la note
+     apparaît à l'écran. Les étoiles s'allument alors une par une, avec un petit rebond. */
+  .stars[data-animate] .star::before {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .stars[data-animate].is-lit .star::before {
+    animation: star-pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) calc(var(--i) * 0.12s) both;
+  }
+
+  @keyframes star-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0) rotate(-40deg);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1.35) rotate(8deg);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   li p {
     margin: 0.25rem 0;
+  }
+</style>
+
+<!-- Animations des filtres : les pseudo-éléments ::view-transition vivent à la racine du document,
+     hors de portée des styles de la page, d'où le bloc global. -->
+<style is:global>
+  /* Les œuvres qui restent glissent jusqu'à leur nouvelle place. */
+  ::view-transition-group(*) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Une œuvre qui apparaît monte légèrement en fondu. */
+  ::view-transition-new(*):only-child {
+    animation: shelf-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
+  }
+
+  /* Une œuvre qui s'en va rétrécit un peu en s'effaçant. */
+  ::view-transition-old(*):only-child {
+    animation: shelf-out 0.2s ease-in both;
+  }
+
+  @keyframes shelf-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+    }
+  }
+
+  @keyframes shelf-out {
+    to {
+      opacity: 0;
+      transform: scale(0.97);
+    }
   }
 </style>
