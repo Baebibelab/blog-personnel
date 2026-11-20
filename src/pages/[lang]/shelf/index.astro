@@ -320,6 +320,40 @@ const stars = (n: number) => {
     }
   }
 
+  /* Effet « élastique » (One Piece) : au survol, la couverture s'étire vers le texte comme du
+     caoutchouc, puis revient à sa place en rebondissant de moins en moins fort. */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='elastic']:hover {
+      z-index: 1;
+      transform-origin: right center;
+      animation: elastic 0.9s ease-out both;
+    }
+  }
+
+  @keyframes elastic {
+    0% {
+      transform: none;
+    }
+    22% {
+      transform: scale(1.5, 0.82);
+    }
+    40% {
+      transform: scale(0.82, 1.12);
+    }
+    56% {
+      transform: scale(1.14, 0.93);
+    }
+    72% {
+      transform: scale(0.95, 1.04);
+    }
+    86% {
+      transform: scale(1.03, 0.99);
+    }
+    100% {
+      transform: none;
+    }
+  }
+
   .icon {
     font-size: 1.2rem;
     line-height: 1.5;
