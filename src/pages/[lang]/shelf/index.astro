@@ -94,7 +94,11 @@ const stars = (n: number) => {
                     )}
                   </div>
                   {data.cover && (
-                    <span class="cover-tilt" data-tilt>
+                    <span
+                      class="cover-tilt"
+                      data-tilt={data.effect ? undefined : ''}
+                      data-effect={data.effect}
+                    >
                       <Image class="cover" src={data.cover} alt="" width={160} loading="lazy" />
                       <span class="glare" aria-hidden="true" />
                     </span>
@@ -290,6 +294,30 @@ const stars = (n: number) => {
 
   .is-tilting .glare {
     opacity: 1;
+  }
+
+  /* Effet « papier découpé » (South Park) : au survol, la couverture saute d'une pose à l'autre
+     sans transition, comme une animation en découpages, avec une ombre nette de carton. */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='papercut']:hover {
+      animation: papercut 0.8s steps(1, end) infinite;
+      box-shadow: 3px 3px 0 rgb(0 0 0 / 0.35);
+    }
+  }
+
+  @keyframes papercut {
+    0% {
+      transform: rotate(-3deg) translate(0, -2px);
+    }
+    25% {
+      transform: rotate(2deg) translate(1px, 1px);
+    }
+    50% {
+      transform: rotate(-1deg) translate(-1px, -3px);
+    }
+    75% {
+      transform: rotate(3deg) translate(0, 0);
+    }
   }
 
   .icon {

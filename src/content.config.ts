@@ -88,6 +88,9 @@ const shelf = defineCollection({
       review: z.string().optional(),
       // Image de couverture, chemin relatif au fichier YAML (ex. ./covers/dune.jpg).
       cover: image().optional(),
+      // Effet spécial sur la couverture, pour un clin d'œil à l'œuvre.
+      // papercut : la couverture s'agite par saccades au survol, façon papier découpé.
+      effect: z.enum(['papercut']).optional(),
     })
     // `finished` reste une date ; `finishedPrecision` dit s'il faut afficher le jour, le mois ou l'année.
     .transform(({ finished, ...data }) => ({
