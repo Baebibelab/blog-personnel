@@ -1,6 +1,6 @@
 # blog-personnel
 
-Mon jardin numérique : journal de bord de mes projets, notes, étagère (livres, films, albums) et écoutes Jellyfin.
+Mon site perso : journal de bord de mes projets, notes, étagère (livres, films, albums) et écoutes Jellyfin.
 
 Construit avec [Astro](https://astro.build), hébergé sur GitHub Pages : <https://romainbeal.fr>
 
@@ -52,20 +52,20 @@ Le site n'existe qu'en français pour l'instant. Les adresses gardent le préfix
 
 ## Réglages
 
-- **Ton nom**, ton adresse de contact et l'activation de la page Écoutes : `src/site.config.ts`.
+- **Nom**, adresse de contact et activation de la page Écoutes : `src/site.config.ts`.
 - **Textes de l'interface** (menus, intros des rubriques) : `src/i18n/ui.ts`.
 - **Couleurs et typographie** : `src/styles/global.css`.
 
 ## Écoutes Jellyfin
 
-**La page est désactivée pour l'instant** (`listening: false` dans `src/site.config.ts`) : elle n'apparaît ni dans le menu ni sur l'accueil, et `/fr/listening/` n'est pas générée. Pour la réactiver, configure les étapes ci-dessous puis passe `listening` à `true`.
+**La page est désactivée pour l'instant** (`listening: false` dans `src/site.config.ts`) : elle n'apparaît ni dans le menu ni sur l'accueil, et `/fr/listening/` n'est pas générée. Pour la réactiver, configurer les étapes ci-dessous puis passer `listening` à `true`.
 
-La page Écoutes affiche tes dernières écoutes. Elles sont récupérées **au moment de la construction du site** : la clé d'accès et l'adresse de ton serveur n'apparaissent jamais dans les pages publiées. Les pochettes sont intégrées dans la page.
+La page Écoutes affiche les dernières écoutes. Elles sont récupérées **au moment de la construction du site** : la clé d'accès et l'adresse du serveur n'apparaissent jamais dans les pages publiées. Les pochettes sont intégrées dans la page.
 
-1. Dans Jellyfin, *Tableau de bord › Clés API* : crée une clé.
-2. Trouve ton identifiant utilisateur : *Tableau de bord › Utilisateurs*, clique sur ton compte, l'identifiant est dans l'adresse (`userId=…`).
-3. En local : copie `.env.example` en `.env` et remplis les trois valeurs.
-4. En ligne : dans le dépôt GitHub, *Settings › Secrets and variables › Actions*, ajoute les secrets `JELLYFIN_URL`, `JELLYFIN_API_KEY` et `JELLYFIN_USER_ID`.
+1. Dans Jellyfin, *Tableau de bord › Clés API* : créer une clé.
+2. Trouver mon identifiant utilisateur : *Tableau de bord › Utilisateurs*, clique sur mon compte, l'identifiant est dans l'adresse (`userId=…`).
+3. En local : copie `.env.example` en `.env` et remplir les trois valeurs.
+4. En ligne : dans le dépôt GitHub, *Settings › Secrets and variables › Actions*, ajouter les secrets `JELLYFIN_URL`, `JELLYFIN_API_KEY` et `JELLYFIN_USER_ID`.
 
 Le serveur doit être joignable depuis Internet pour que GitHub puisse le lire. Sans configuration, ou si le serveur ne répond pas, le site se construit quand même et la page Écoutes l'indique.
 
