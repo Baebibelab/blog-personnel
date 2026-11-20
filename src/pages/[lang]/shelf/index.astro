@@ -129,6 +129,13 @@ const stars = (n: number) => {
                           <span class="slash" aria-hidden="true" />
                         </>
                       )}
+                      {/* Éclipse : un voile sombre bordé de rouge, et le disque qui se lève. */}
+                      {data.effect === 'eclipse' && (
+                        <>
+                          <span class="eclipse-veil" aria-hidden="true" />
+                          <span class="eclipse" aria-hidden="true" />
+                        </>
+                      )}
                     </span>
                   )}
                 </li>
@@ -551,6 +558,75 @@ const stars = (n: number) => {
     100% {
       opacity: 0;
       transform: rotate(-32deg) scaleX(1);
+    }
+  }
+
+  /* Effet « éclipse » (Berserk) : au survol, la couverture s'assombrit et un cercle rouge se
+     resserre sur ses bords, une éclipse se lève au milieu, puis la couverture se met à trembler. */
+  .eclipse-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgb(0 0 0 / 0) 20%, rgb(80 0 0 / 0.9) 100%),
+      rgb(0 0 0 / 0.55);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .eclipse {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    width: 46%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    pointer-events: none;
+    background: #050505;
+    /* Couronne rouge autour du disque noir. */
+    box-shadow:
+      0 0 4px 2px rgb(255 70 50 / 0.95),
+      0 0 16px 6px rgb(200 0 0 / 0.7),
+      0 0 34px 12px rgb(140 0 0 / 0.45);
+    opacity: 0;
+    transform: translate(-50%, 10%) scale(0.6);
+    transition:
+      opacity 0.3s ease,
+      transform 0.4s ease-in;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='eclipse']:hover {
+      animation: tremble 0.14s linear 0.7s infinite;
+    }
+
+    [data-effect='eclipse']:hover .eclipse-veil {
+      opacity: 1;
+      transition-duration: 0.6s;
+    }
+
+    [data-effect='eclipse']:hover .eclipse {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      transition:
+        opacity 0.5s ease 0.1s,
+        transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s;
+    }
+  }
+
+  @keyframes tremble {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-1px, 0.5px);
+    }
+    50% {
+      transform: translate(0.5px, -1px);
+    }
+    75% {
+      transform: translate(1px, 0.5px);
     }
   }
 
