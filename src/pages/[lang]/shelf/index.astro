@@ -22,7 +22,13 @@ for (const item of items) {
 
 const icons = { book: '📖', manga: '📚', film: '🎬', series: '📺', album: '💿' } as const;
 const filters = ['all', 'book', 'manga', 'film', 'series', 'album'] as const;
-const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
+// Note arrondie à la demi-étoile : 3.5 donne trois étoiles pleines, une demie et une vide.
+const stars = (n: number) => {
+  const halves = Math.round(n * 2);
+  const full = Math.floor(halves / 2);
+  const half = halves % 2 === 1;
+  return { full: '★'.repeat(full), half, empty: '☆'.repeat(5 - full - (half ? 1 : 0)) };
+};
 ---
 
 <Base lang={lang} title={t(lang, 'shelf.title')} description={t(lang, 'shelf.intro')}>
@@ -59,11 +65,21 @@ const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math
                       {data.year && ` (${data.year})`}
                     </span>
                     {data.progress && <span class="progress small">{data.progress}</span>}
-                    {data.rating !== undefined && (
-                      <span class="stars" aria-label={`${data.rating}/5`}>
-                        {stars(data.rating)}
-                      </span>
-                    )}
+                    {data.rating !== undefined &&
+                      (() => {
+                        const { full, half, empty } = stars(data.rating);
+                        return (
+                          <span
+                            class="stars"
+                            role="img"
+                            aria-label={`${data.rating.toLocaleString(lang)}/5`}
+                          >
+                            {full}
+                            {half && <span class="half">☆</span>}
+                            {empty}
+                          </span>
+                        );
+                      })()}
                     {data.review && <p>{data.review}</p>}
                     {/* Une année seule est déjà donnée par le titre de la section. */}
                     {data.finishedPrecision !== 'year' && (
@@ -177,6 +193,22 @@ const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math
     color: var(--accent);
     letter-spacing: 0.1em;
     font-size: 0.9rem;
+  }
+
+  /* Demi-étoile : une étoile vide, recouverte à moitié par une étoile pleine. */
+  .half {
+    position: relative;
+    display: inline-block;
+    letter-spacing: 0;
+    margin-right: 0.1em;
+  }
+
+  .half::before {
+    content: '★';
+    position: absolute;
+    inset: 0;
+    width: 50%;
+    overflow: hidden;
   }
 
   li p {

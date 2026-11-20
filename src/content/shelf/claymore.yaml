@@ -1,0 +1,9 @@
+type: manga
+title: Claymore
+creator: Norihiro Yagi
+year: 2001
+progress: Tomes 1 à 5
+finished: 2026-11-19 # date du dernier tome lu
+rating: 3.5
+review: Les tueuses aux yeux d'argent qui font peur avec des têtes qui sautent et des enfants qui foutent le bordel
+cover: ./covers/claymore.jpg
