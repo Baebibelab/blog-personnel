@@ -13,6 +13,8 @@ const { lang } = Astro.props;
   <div class="container">
     <span>© {new Date().getFullYear()} {site.author}</span>
     <span aria-hidden="true">·</span>
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+    <span aria-hidden="true">·</span>
     <a href={href(lang, 'rss.xml')}>RSS</a>
     <span aria-hidden="true">·</span>
     <a href={site.github}>GitHub</a>

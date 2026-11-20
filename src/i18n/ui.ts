@@ -1,11 +1,13 @@
-export const languages = { fr: 'Français', en: 'English' } as const;
+// Le site n'existe qu'en français pour l'instant. Pour ajouter une langue :
+// l'ajouter ici, lui donner son dictionnaire plus bas, et créer les dossiers de contenu.
+export const languages = { fr: 'Français' } as const;
 export type Lang = keyof typeof languages;
 export const langs = Object.keys(languages) as Lang[];
 export const defaultLang: Lang = 'fr';
 
 const fr = {
-  'site.tagline': 'Journal de bord, notes et étagère',
-  'site.description': 'Mon jardin numérique : journal de bord de mes projets, notes en vrac, lectures, films et musique.',
+  'site.tagline': 'OHHHH LADIES',
+  'site.description': 'Un vrai petit livre de poche. Réunion tup sur mes projets, des notes en vrac et des lectures, films, musique...',
   'nav.home': 'Accueil',
   'nav.journal': 'Journal',
   'nav.notes': 'Notes',
@@ -13,19 +15,18 @@ const fr = {
   'nav.shelf': 'Étagère',
   'nav.listening': 'Écoutes',
   'nav.about': 'À propos',
-  'nav.switch': 'English',
-  'home.intro': 'Bienvenue dans mon jardin numérique. J’y garde une trace de mes projets, de mes idées et de ce que je lis, regarde et écoute.',
-  'home.latestJournal': 'Derniers billets du journal',
-  'home.latestNotes': 'Dernières notes',
+  'home.intro': 'Bienvenue sur mon site. J’y mettrai peut-être des choses sur mes projets et d’autres trucs',
+  'home.latestJournal': 'Dernières news du journal',
+  'home.latestNotes': 'Des petites notes ? Hmmm des petites notes.',
   'home.projects': 'Projets',
   'home.nowPlaying': 'Dernière écoute',
   'journal.title': 'Journal',
-  'journal.intro': 'Le journal de bord de mes projets : ce que j’ai fait, ce que j’ai appris, ce qui coince.',
+  'journal.intro': 'Hissez-haut moussaillon et vous pourrez lire le journal de bord du vieux capitaine rempli de bons vieux films de culture !! ARRRHGHHHHH .',
   'notes.title': 'Notes',
-  'notes.intro': 'Idées, liens et trouvailles, en vrac. Certaines notes évoluent avec le temps.',
+  'notes.intro': 'Idées, liens et autre en vrac',
   'projects.title': 'Projets',
-  'projects.intro': 'Ce que je construis en ce moment.',
-  'projects.related': 'Billets du journal sur ce projet',
+  'projects.intro': 'What burning ? Roof burning, watafak',
+  'projects.related': 'Où suis-je ?',
   'projects.site': 'Site du projet',
   'projects.repo': 'Code source',
   'projects.appStore': 'App Store',
@@ -33,14 +34,14 @@ const fr = {
   'status.paused': 'En pause',
   'status.done': 'Terminé',
   'shelf.title': 'Étagère',
-  'shelf.intro': 'Les livres, films et albums qui sont passés entre mes mains, avec une note et un avis court.',
+  'shelf.intro': 'Des fois je lis des films ou j’écoute des livres ptn de clavier qwerty',
   'shelf.all': 'Tout',
   'shelf.book': 'Livres',
   'shelf.film': 'Films',
   'shelf.album': 'Albums',
-  'shelf.empty': 'L’étagère est encore vide.',
+  'shelf.empty': 'L’étagère est encore vide car je suis illetré (illétré ?).',
   'listening.title': 'Écoutes',
-  'listening.intro': 'Ce que j’ai écouté récemment, depuis mon serveur Jellyfin. La liste se met à jour chaque nuit.',
+  'listening.intro': 'Ce que j’ai écouté récemment, depuis mon serveur Jellyfin. Comment ça on s’en branle ?',
   'listening.unavailable': 'Les écoutes ne sont pas disponibles pour le moment.',
   'listening.updated': 'Mis à jour le',
   'post.updated': 'Mis à jour le',
@@ -49,59 +50,10 @@ const fr = {
   'empty': 'Rien pour l’instant.',
   'seeAll': 'Tout voir',
   'notFound.title': 'Page introuvable',
-  'notFound.text': 'Cette page n’existe pas, ou plus.',
+  'notFound.text': 'Cette page n’existe pas, ou plus. A-t-elle déjà existé ? Le trip de dingue',
 };
 
-const en: Record<keyof typeof fr, string> = {
-  'site.tagline': 'Devlog, notes and shelf',
-  'site.description': 'My digital garden: a devlog of my projects, loose notes, books, films and music.',
-  'nav.home': 'Home',
-  'nav.journal': 'Devlog',
-  'nav.notes': 'Notes',
-  'nav.projects': 'Projects',
-  'nav.shelf': 'Shelf',
-  'nav.listening': 'Listening',
-  'nav.about': 'About',
-  'nav.switch': 'Français',
-  'home.intro': 'Welcome to my digital garden. This is where I keep track of my projects, my ideas, and what I read, watch and listen to.',
-  'home.latestJournal': 'Latest devlog entries',
-  'home.latestNotes': 'Latest notes',
-  'home.projects': 'Projects',
-  'home.nowPlaying': 'Last played',
-  'journal.title': 'Devlog',
-  'journal.intro': 'A logbook of my projects: what I did, what I learned, what got in the way.',
-  'notes.title': 'Notes',
-  'notes.intro': 'Ideas, links and findings, loosely kept. Some notes grow over time.',
-  'projects.title': 'Projects',
-  'projects.intro': 'What I am building right now.',
-  'projects.related': 'Devlog entries about this project',
-  'projects.site': 'Project website',
-  'projects.repo': 'Source code',
-  'projects.appStore': 'App Store',
-  'status.active': 'Active',
-  'status.paused': 'Paused',
-  'status.done': 'Done',
-  'shelf.title': 'Shelf',
-  'shelf.intro': 'Books, films and albums I went through, with a rating and a short review.',
-  'shelf.all': 'All',
-  'shelf.book': 'Books',
-  'shelf.film': 'Films',
-  'shelf.album': 'Albums',
-  'shelf.empty': 'The shelf is still empty.',
-  'listening.title': 'Listening',
-  'listening.intro': 'What I listened to recently, from my Jellyfin server. The list refreshes every night.',
-  'listening.unavailable': 'Listening history is not available right now.',
-  'listening.updated': 'Updated on',
-  'post.updated': 'Updated on',
-  'post.backTo': 'Back to',
-  'post.link': 'Link',
-  'empty': 'Nothing yet.',
-  'seeAll': 'See all',
-  'notFound.title': 'Page not found',
-  'notFound.text': 'This page does not exist, or no longer does.',
-};
-
-export const ui = { fr, en };
+export const ui = { fr };
 export type UiKey = keyof typeof fr;
 
 export function t(lang: Lang, key: UiKey): string {
@@ -112,12 +64,8 @@ export function isLang(value: string | undefined): value is Lang {
   return !!value && value in languages;
 }
 
-export function otherLang(lang: Lang): Lang {
-  return lang === 'fr' ? 'en' : 'fr';
-}
-
 export function formatDate(date: Date, lang: Lang): string {
-  return date.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', {
+  return date.toLocaleDateString(lang, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

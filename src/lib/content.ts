@@ -38,15 +38,3 @@ export async function getProjects(lang: Lang) {
   const entries = await getCollection('projects', ({ id }) => id.startsWith(`${lang}/`));
   return entries.sort((a, b) => a.data.order - b.data.order);
 }
-
-/** Cherche la version d'un billet ou d'une note dans l'autre langue (même translationKey). */
-export async function findTranslation<C extends 'journal' | 'notes'>(
-  collection: C,
-  entry: CollectionEntry<C>,
-  lang: Lang,
-): Promise<CollectionEntry<C> | undefined> {
-  const key = entry.data.translationKey;
-  if (!key) return undefined;
-  const all = (await getCollection(collection)) as CollectionEntry<C>[];
-  return all.find((e) => e.id.startsWith(`${lang}/`) && e.data.translationKey === key);
-}

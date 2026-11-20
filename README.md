@@ -1,6 +1,6 @@
 # blog-personnel
 
-Mon jardin numérique, en français et en anglais : journal de bord de mes projets, notes, étagère (livres, films, albums) et écoutes Jellyfin.
+Mon jardin numérique : journal de bord de mes projets, notes, étagère (livres, films, albums) et écoutes Jellyfin.
 
 Construit avec [Astro](https://astro.build), hébergé sur GitHub Pages : <https://romainbeal.fr>
 
@@ -17,11 +17,11 @@ Le site s'ouvre sur <http://localhost:4321/>. En local, les brouillons (`draft: 
 
 | Rubrique | Dossier | Un fichier par… |
 |---|---|---|
-| Journal | `src/content/journal/fr/` et `en/` | billet (`.md`) |
-| Notes | `src/content/notes/fr/` et `en/` | note (`.md`) |
-| Projets | `src/content/projects/fr/` et `en/` | projet (`.md`) |
+| Journal | `src/content/journal/fr/` | billet (`.md`) |
+| Notes | `src/content/notes/fr/` | note (`.md`) |
+| Projets | `src/content/projects/fr/` | projet (`.md`) |
 | Étagère | `src/content/shelf/` | œuvre (`.yaml`, voir `_exemple.yaml`) |
-| À propos | `src/content/pages/fr/about.md` et `en/about.md` | — |
+| À propos | `src/content/pages/fr/about.md` | — |
 
 Le nom du fichier donne l'adresse de la page : `src/content/journal/fr/mon-billet.md` devient `/fr/journal/mon-billet/`.
 
@@ -37,7 +37,6 @@ date: 2026-11-19
 project: andia            # ou judo-deckbuilder : le billet apparaît sur la fiche du projet
 tags: [swiftui]
 draft: true               # facultatif : brouillon visible seulement en local
-translationKey: le-titre  # même valeur dans la version anglaise, pour passer de l'une à l'autre
 ---
 
 Le texte en Markdown.
@@ -47,13 +46,13 @@ Le texte en Markdown.
 
 Mêmes champs, sans `description` ni `project`, avec en plus `updated` (date de mise à jour) et `link` (pour une note qui partage un lien).
 
-### Traduire ou pas
+### Langue
 
-Un billet peut n'exister que dans une langue. Le lien « English / Français » mène alors à la liste de la rubrique dans l'autre langue.
+Le site n'existe qu'en français pour l'instant. Les adresses gardent le préfixe `/fr/` pour pouvoir ajouter une autre langue plus tard sans casser les liens.
 
 ## Réglages
 
-- **Ton nom** et l'activation de la page Écoutes : `src/site.config.ts`.
+- **Ton nom**, ton adresse de contact et l'activation de la page Écoutes : `src/site.config.ts`.
 - **Textes de l'interface** (menus, intros des rubriques) : `src/i18n/ui.ts`.
 - **Couleurs et typographie** : `src/styles/global.css`.
 

@@ -1,20 +1,22 @@
 ---
 title: À propos
-description: Qui je suis et ce que je fais.
+description: Ingénia, judokeur et amateur de musique.
 ---
 
-<!-- À compléter avec tes mots. -->
-
-Je m'appelle **Romain Beal**.
+Bonjour, je suis **Romain**.
 
 ## Ce que je fais
 
-Quelques lignes sur ton parcours et ton métier.
+Je suis ingénieur chez Eiffage. À côté, je trouve des projets pour le plaisir (et combattre l'ennui) : en ce moment [Andia](../projects/andia/), une app iOS pour écouter ma musique, et [Randori Road](../projects/randori-road/), un jeu de cartes autour du judo.
 
-## Ce qui m'anime
+## J'aime bien
 
-Le judo, le développement d'apps iOS, la musique, les livres et les films.
+- **Le judo**
+- **La musique**
+- **Les livres et les films**, que je range sur mon [étagère](../shelf/).
 
-## Me contacter
+## Me trouver
 
-- GitHub : [Baebibelab](https://github.com/Baebibelab)
+Pour m'écrire : [hello@romainbeal.fr](mailto:hello@romainbeal.fr).
+
+Je suis aussi sur GitHub : [Baebibelab](https://github.com/Baebibelab).

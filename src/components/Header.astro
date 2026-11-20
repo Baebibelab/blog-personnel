@@ -1,13 +1,12 @@
 ---
-import { href, otherLang, t, type Lang, type UiKey } from '../i18n/ui';
+import { href, t, type Lang, type UiKey } from '../i18n/ui';
 import { site } from '../site.config';
 
 interface Props {
   lang: Lang;
-  altHref: string;
 }
 
-const { lang, altHref } = Astro.props;
+const { lang } = Astro.props;
 
 const nav: { key: UiKey; path: string }[] = [
   { key: 'nav.journal', path: 'journal' },
@@ -24,11 +23,8 @@ const current = Astro.url.pathname;
 <header class="site-header">
   <div class="container bar">
     <a class="brand" href={href(lang)}>{site.author}</a>
-    <a class="lang" href={altHref} hreflang={otherLang(lang)} lang={otherLang(lang)}>
-      {t(lang, 'nav.switch')}
-    </a>
   </div>
-  <nav class="container" aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'}>
+  <nav class="container" aria-label="Navigation principale">
     <ul>
       {
         nav.map(({ key, path }) => {
@@ -66,11 +62,6 @@ const current = Astro.url.pathname;
     font-weight: 600;
     color: var(--text);
     text-decoration: none;
-  }
-
-  .lang {
-    font-size: 0.9rem;
-    color: var(--muted);
   }
 
   ul {

@@ -5,7 +5,7 @@ import { z } from 'astro/zod';
 // Les fichiers dont le nom commence par « _ » sont ignorés (modèles, brouillons privés).
 const markdown = '**/[^_]*.md';
 
-// Journal de bord : src/content/journal/<fr|en>/<slug>.md
+// Journal de bord : src/content/journal/fr/<slug>.md
 const journal = defineCollection({
   loader: glob({ pattern: markdown, base: './src/content/journal' }),
   schema: z.object({
@@ -16,12 +16,10 @@ const journal = defineCollection({
     project: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
-    // Même valeur dans la version française et anglaise d'un billet, pour passer de l'une à l'autre.
-    translationKey: z.string().optional(),
   }),
 });
 
-// Notes en vrac : src/content/notes/<fr|en>/<slug>.md
+// Notes en vrac : src/content/notes/fr/<slug>.md
 const notes = defineCollection({
   loader: glob({ pattern: markdown, base: './src/content/notes' }),
   schema: z.object({
@@ -32,15 +30,14 @@ const notes = defineCollection({
     link: z.string().url().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
-    translationKey: z.string().optional(),
   }),
 });
 
-// Fiches projet : src/content/projects/<fr|en>/<slug>.md
+// Fiches projet : src/content/projects/fr/<slug>.md
 const projects = defineCollection({
   loader: glob({ pattern: markdown, base: './src/content/projects' }),
   schema: z.object({
-    // Identifiant commun aux deux langues, repris par le champ `project` des billets.
+    // Identifiant du projet, repris par le champ `project` des billets.
     key: z.string(),
     title: z.string(),
     tagline: z.string(),
@@ -68,16 +65,11 @@ const shelf = defineCollection({
     year: z.number().optional(),
     rating: z.number().min(0).max(5).optional(),
     finished: z.coerce.date(),
-    review: z
-      .object({
-        fr: z.string().optional(),
-        en: z.string().optional(),
-      })
-      .default({}),
+    review: z.string().optional(),
   }),
 });
 
-// Pages simples (À propos) : src/content/pages/<fr|en>/<slug>.md
+// Pages simples (À propos) : src/content/pages/fr/<slug>.md
 const pages = defineCollection({
   loader: glob({ pattern: markdown, base: './src/content/pages' }),
   schema: z.object({

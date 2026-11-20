@@ -62,9 +62,7 @@ const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math
                         {stars(data.rating)}
                       </span>
                     )}
-                    {(data.review[lang] ?? data.review.fr ?? data.review.en) && (
-                      <p>{data.review[lang] ?? data.review.fr ?? data.review.en}</p>
-                    )}
+                    {data.review && <p>{data.review}</p>}
                     <time class="muted small" datetime={data.finished.toISOString()}>
                       {formatDate(data.finished, lang)}
                     </time>

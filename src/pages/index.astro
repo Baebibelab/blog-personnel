@@ -1,10 +1,8 @@
 ---
-// La racine du site renvoie vers la version française,
-// ou anglaise si le navigateur est réglé en anglais.
+// La racine du site renvoie vers la version française.
 import { href } from '../i18n/ui';
 
 const fr = href('fr');
-const en = href('en');
 ---
 
 <!doctype html>
@@ -15,14 +13,9 @@ const en = href('en');
     <title>…</title>
     <meta name="robots" content="noindex" />
     <link rel="canonical" href={fr} />
-    <script is:inline define:vars={{ fr, en }}>
-      const english = (navigator.languages || [navigator.language]).some((l) => /^en\b/i.test(l))
-        && !(navigator.languages || []).some((l) => /^fr\b/i.test(l));
-      location.replace(english ? en : fr);
-    </script>
-    <noscript><meta http-equiv="refresh" content={`0; url=${fr}`} /></noscript>
+    <meta http-equiv="refresh" content={`0; url=${fr}`} />
   </head>
   <body>
-    <p><a href={fr}>Français</a> · <a href={en}>English</a></p>
+    <p><a href={fr}>Entrer sur le site</a></p>
   </body>
 </html>
