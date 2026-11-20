@@ -94,7 +94,10 @@ const shelf = defineCollection({
       // bullets : trois impacts de balle criblent la couverture au survol, qui tressaute à chaque tir.
       // slash : un coup de lame traverse la couverture au survol, qui se sépare en deux morceaux.
       // eclipse : la couverture s'assombrit, une éclipse rouge se lève et elle se met à trembler.
-      effect: z.enum(['papercut', 'elastic', 'bullets', 'slash', 'eclipse']).optional(),
+      // fourth-wall : la couverture se tourne vers le visiteur et lui parle dans une bulle de BD.
+      effect: z
+        .enum(['papercut', 'elastic', 'bullets', 'slash', 'eclipse', 'fourth-wall'])
+        .optional(),
     })
     // `finished` reste une date ; `finishedPrecision` dit s'il faut afficher le jour, le mois ou l'année.
     .transform(({ finished, ...data }) => ({
