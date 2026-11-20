@@ -149,6 +149,34 @@ const quips = [
                           {quips[0]}
                         </span>
                       )}
+                      {/* Pomme : dessinée ici plutôt qu'en emoji, pour être la même partout. */}
+                      {data.effect === 'apple' && (
+                        <span class="apple" aria-hidden="true">
+                          <svg viewBox="0 0 40 44">
+                            <path d="M21 11c1-5 5-8 10-8-1 5-5 8-10 8z" fill="#3f8f3a" />
+                            <path
+                              d="M20 13c-.5-3-1.5-6-3.5-8"
+                              stroke="#5b3a1e"
+                              stroke-width="2.2"
+                              stroke-linecap="round"
+                              fill="none"
+                            />
+                            <path
+                              d="M20 13c-8-6-18-2-18 10 0 12 8 21 14 20 2-.5 3-1 4-1s2 .5 4 1c6 1 14-8 14-20 0-12-10-16-18-10z"
+                              fill="#d62828"
+                            />
+                            <ellipse
+                              cx="11"
+                              cy="22"
+                              rx="2.5"
+                              ry="6"
+                              fill="#fff"
+                              opacity="0.35"
+                              transform="rotate(20 11 22)"
+                            />
+                          </svg>
+                        </span>
+                      )}
                     </span>
                   )}
                 </li>
@@ -715,6 +743,93 @@ const quips = [
       transition:
         opacity 0.2s ease 0.15s,
         transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1) 0.15s;
+    }
+  }
+
+  /* Effet « pomme » (Death Note) : au survol, une pomme tombe sur la couverture, rebondit,
+     puis se fait croquer deux fois. Les bouchées sont des cercles retirés de la pomme par un
+     masque, dont le rayon s'agrandit (d'où les deux propriétés déclarées avec @property,
+     sans quoi le navigateur ne saurait pas animer leur valeur). */
+  @property --bite-1 {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+  }
+
+  @property --bite-2 {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+  }
+
+  .apple {
+    position: absolute;
+    /* Au-dessus du titre, côté droit, pour ne pas le cacher. */
+    left: 70%;
+    bottom: 22%;
+    width: 38%;
+    margin-left: -19%;
+    pointer-events: none;
+    opacity: 0;
+    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.4));
+    mask-image:
+      radial-gradient(circle at 100% 40%, transparent var(--bite-1), #000 calc(var(--bite-1) + 0.5px)),
+      radial-gradient(circle at 97% 66%, transparent var(--bite-2), #000 calc(var(--bite-2) + 0.5px));
+    mask-composite: intersect;
+  }
+
+  .apple svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='apple']:hover .apple {
+      animation:
+        apple-drop 0.9s both,
+        bite-1 0.12s ease-out 1.05s both,
+        bite-2 0.12s ease-out 1.45s both;
+    }
+  }
+
+  @keyframes apple-drop {
+    0% {
+      opacity: 1;
+      transform: translateY(-380%);
+      animation-timing-function: ease-in;
+    }
+    45% {
+      transform: none;
+      animation-timing-function: ease-out;
+    }
+    62% {
+      transform: translateY(-22%);
+      animation-timing-function: ease-in;
+    }
+    78% {
+      transform: none;
+      animation-timing-function: ease-out;
+    }
+    88% {
+      transform: translateY(-6%);
+      animation-timing-function: ease-in;
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes bite-1 {
+    to {
+      --bite-1: 6px;
+    }
+  }
+
+  @keyframes bite-2 {
+    to {
+      --bite-2: 5px;
     }
   }
 
