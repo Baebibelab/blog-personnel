@@ -144,6 +144,11 @@ const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math
     border-bottom: 1px solid var(--border);
   }
 
+  /* Sans cette règle, `display: flex` l'emporte sur l'attribut `hidden` posé par les filtres. */
+  li[hidden] {
+    display: none;
+  }
+
   .body {
     flex: 1;
     min-width: 0;
