@@ -65,9 +65,17 @@ const stars = (n: number) => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math
                       </span>
                     )}
                     {data.review && <p>{data.review}</p>}
-                    <time class="muted small" datetime={data.finished.toISOString()}>
-                      {formatDate(data.finished, lang)}
-                    </time>
+                    {/* Une année seule est déjà donnée par le titre de la section. */}
+                    {data.finishedPrecision !== 'year' && (
+                      <time
+                        class="muted small"
+                        datetime={data.finished
+                          .toISOString()
+                          .slice(0, data.finishedPrecision === 'month' ? 7 : 10)}
+                      >
+                        {formatDate(data.finished, lang, data.finishedPrecision)}
+                      </time>
+                    )}
                   </div>
                   {data.cover && (
                     <Image class="cover" src={data.cover} alt="" width={160} loading="lazy" />

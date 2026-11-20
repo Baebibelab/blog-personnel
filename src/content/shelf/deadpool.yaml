@@ -1,0 +1,8 @@
+type: film
+title: Deadpool
+creator: Tim Miller, David Leitch et Shawn Levy
+year: 2016
+progress: Deadpool, Deadpool 2 et Deadpool & Wolverine
+finished: 2024-07-24 # sortie en France de Deadpool & Wolverine
+rating: 4
+cover: ./covers/deadpool.jpg
