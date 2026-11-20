@@ -8,7 +8,7 @@ tech: [Swift, SwiftUI, Game Center]
 order: 1
 ---
 
-Un homme en noir est venu décrocher l'enseigne du dojo : pour la reprendre, il faut monter jusqu'à lui, du tournoi régional au championnat du monde.
+Un homme en noir est venu décrocher l'enseigne du dojo. Pour la reprendre, il faut monter jusqu'à lui, du tournoi régional au championnat du monde.
 
 ## Le principe
 
