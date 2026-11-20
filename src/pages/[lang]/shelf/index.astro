@@ -101,6 +101,34 @@ const stars = (n: number) => {
                     >
                       <Image class="cover" src={data.cover} alt="" width={160} loading="lazy" />
                       <span class="glare" aria-hidden="true" />
+                      {/* Impacts de balle : position dans la couverture et ordre de tir. */}
+                      {data.effect === 'bullets' &&
+                        [
+                          [30, 26],
+                          [70, 50],
+                          [38, 76],
+                        ].map(([x, y], i) => (
+                          <span
+                            class="hole"
+                            style={`--x: ${x}%; --y: ${y}%; --i: ${i}`}
+                            aria-hidden="true"
+                          />
+                        ))}
+                      {/* Couverture tranchée : une copie de la moitié haute, posée sur l'image,
+                          qui s'en détache au survol, et le trait de lame. */}
+                      {data.effect === 'slash' && (
+                        <>
+                          <Image
+                            class="cover slice-top"
+                            src={data.cover}
+                            alt=""
+                            width={160}
+                            loading="lazy"
+                            aria-hidden="true"
+                          />
+                          <span class="slash" aria-hidden="true" />
+                        </>
+                      )}
                     </span>
                   )}
                 </li>
@@ -351,6 +379,178 @@ const stars = (n: number) => {
     }
     100% {
       transform: none;
+    }
+  }
+
+  /* Effet « impacts de balle » (Sakamoto Days) : au survol, trois tirs à 0,18 s d'écart.
+     À chaque tir, un trou apparaît avec un éclair et la couverture tressaute. Les trous
+     restent tant que la souris est sur la couverture. */
+  .hole {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 13px;
+    height: 13px;
+    margin: -6.5px 0 0 -6.5px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    /* Trou noir au centre, bord de papier arraché plus clair, puis ombre qui s'estompe. */
+    background: radial-gradient(
+      circle,
+      #0d0d0d 0 28%,
+      #2b2b2b 36%,
+      rgb(255 255 255 / 0.85) 44%,
+      rgb(255 255 255 / 0.25) 56%,
+      rgb(0 0 0 / 0.35) 64%,
+      rgb(0 0 0 / 0) 72%
+    );
+  }
+
+  /* Éclair orangé au moment de l'impact. */
+  .hole::after {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(255 230 150 / 0.95), rgb(255 140 40 / 0) 65%);
+    opacity: 0;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='bullets']:hover {
+      animation: recoil 0.18s ease-out 3;
+    }
+
+    [data-effect='bullets']:hover .hole {
+      animation: hole-in 0.2s ease-out calc(var(--i) * 0.18s) both;
+    }
+
+    [data-effect='bullets']:hover .hole::after {
+      animation: muzzle 0.22s ease-out calc(var(--i) * 0.18s) both;
+    }
+  }
+
+  @keyframes recoil {
+    0% {
+      transform: none;
+    }
+    20% {
+      transform: translate(2px, -1px) rotate(1.5deg);
+    }
+    100% {
+      transform: none;
+    }
+  }
+
+  @keyframes hole-in {
+    from {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes muzzle {
+    0% {
+      opacity: 0;
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.4);
+    }
+  }
+
+  /* Effet « tranchée » (Claymore) : au survol, un trait de lame traverse la couverture en
+     diagonale, puis la moitié haute glisse et se décale. La coupe va de 70 % de la hauteur
+     à gauche à 30 % à droite. Quand la souris s'en va, les deux morceaux se recollent. */
+  [data-effect='slash'] {
+    overflow: visible;
+  }
+
+  [data-effect='slash'] .cover {
+    border-radius: 4px;
+    transition:
+      transform 0.3s ease-in,
+      clip-path 0s 0.3s;
+  }
+
+  /* Au repos, la découpe couvre toute l'image. Elle a le même nombre de points que la
+     découpe du survol : sans ça, le navigateur ne respecte pas le délai et l'image entière
+     réapparaît avant que la moitié haute soit revenue, ce qui montre un doublon. */
+  [data-effect='slash'] .cover:not(.slice-top) {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .slice-top {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 30%, 0 70%);
+  }
+
+  .slash {
+    position: absolute;
+    top: 50%;
+    left: -12%;
+    width: 124%;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    background: #fff;
+    box-shadow:
+      0 0 4px 1px rgb(255 255 255 / 0.9),
+      0 0 10px 2px rgb(190 215 255 / 0.7);
+    transform: rotate(-32deg) scaleX(0);
+    transform-origin: right center;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    /* L'ombre rectangulaire ne suivrait pas les morceaux : on la retire pendant la coupe. */
+    [data-effect='slash']:hover {
+      z-index: 1;
+      box-shadow: none;
+    }
+
+    /* La couverture d'origine devient la moitié basse, qui recule un peu. */
+    [data-effect='slash']:hover .cover:not(.slice-top) {
+      clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0 100%);
+      transform: translate(2px, 3px);
+      transition:
+        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) 0.14s,
+        clip-path 0s 0.14s;
+    }
+
+    /* La moitié haute glisse le long de la coupe et penche. */
+    [data-effect='slash']:hover .slice-top {
+      transform: translate(-7px, -3px) rotate(-5deg);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) 0.14s;
+    }
+
+    [data-effect='slash']:hover .slash {
+      animation: slash 0.4s ease-out both;
+    }
+  }
+
+  @keyframes slash {
+    0% {
+      opacity: 1;
+      transform: rotate(-32deg) scaleX(0);
+    }
+    35% {
+      opacity: 1;
+      transform: rotate(-32deg) scaleX(1);
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(-32deg) scaleX(1);
     }
   }
 

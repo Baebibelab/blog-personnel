@@ -91,7 +91,9 @@ const shelf = defineCollection({
       // Effet spécial sur la couverture, pour un clin d'œil à l'œuvre.
       // papercut : la couverture s'agite par saccades au survol, façon papier découpé.
       // elastic : la couverture s'étire comme du caoutchouc au survol, puis revient en rebondissant.
-      effect: z.enum(['papercut', 'elastic']).optional(),
+      // bullets : trois impacts de balle criblent la couverture au survol, qui tressaute à chaque tir.
+      // slash : un coup de lame traverse la couverture au survol, qui se sépare en deux morceaux.
+      effect: z.enum(['papercut', 'elastic', 'bullets', 'slash']).optional(),
     })
     // `finished` reste une date ; `finishedPrecision` dit s'il faut afficher le jour, le mois ou l'année.
     .transform(({ finished, ...data }) => ({
