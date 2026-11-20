@@ -30,6 +30,13 @@ const stars = (n: number) => {
     halves >= 2 * (i + 1) ? 'full' : halves === 2 * i + 1 ? 'half' : 'empty',
   );
 };
+// Répliques de la bulle de l'effet fourth-wall : une nouvelle à chaque survol.
+const quips = [
+  'Hé, mes yeux sont plus haut.',
+  'Tu survoles souvent les gens comme ça ?',
+  '4/5 ? Je vais faire semblant de ne pas avoir vu.',
+  'Oui, je sais que je suis sur un site perso.',
+];
 ---
 
 <Base lang={lang} title={t(lang, 'shelf.title')} description={t(lang, 'shelf.intro')}>
@@ -129,6 +136,47 @@ const stars = (n: number) => {
                           <span class="slash" aria-hidden="true" />
                         </>
                       )}
+                      {/* Éclipse : un voile sombre bordé de rouge, et le disque qui se lève. */}
+                      {data.effect === 'eclipse' && (
+                        <>
+                          <span class="eclipse-veil" aria-hidden="true" />
+                          <span class="eclipse" aria-hidden="true" />
+                        </>
+                      )}
+                      {/* Quatrième mur : la bulle, dont le script change la réplique à chaque survol. */}
+                      {data.effect === 'fourth-wall' && (
+                        <span class="bubble" aria-hidden="true" data-quips={JSON.stringify(quips)}>
+                          {quips[0]}
+                        </span>
+                      )}
+                      {/* Pomme : dessinée ici plutôt qu'en emoji, pour être la même partout. */}
+                      {data.effect === 'apple' && (
+                        <span class="apple" aria-hidden="true">
+                          <svg viewBox="0 0 40 44">
+                            <path d="M21 11c1-5 5-8 10-8-1 5-5 8-10 8z" fill="#3f8f3a" />
+                            <path
+                              d="M20 13c-.5-3-1.5-6-3.5-8"
+                              stroke="#5b3a1e"
+                              stroke-width="2.2"
+                              stroke-linecap="round"
+                              fill="none"
+                            />
+                            <path
+                              d="M20 13c-8-6-18-2-18 10 0 12 8 21 14 20 2-.5 3-1 4-1s2 .5 4 1c6 1 14-8 14-20 0-12-10-16-18-10z"
+                              fill="#d62828"
+                            />
+                            <ellipse
+                              cx="11"
+                              cy="22"
+                              rx="2.5"
+                              ry="6"
+                              fill="#fff"
+                              opacity="0.35"
+                              transform="rotate(20 11 22)"
+                            />
+                          </svg>
+                        </span>
+                      )}
                     </span>
                   )}
                 </li>
@@ -195,6 +243,18 @@ const stars = (n: number) => {
       observer.observe(rating);
     });
   }
+
+  // Quatrième mur : une nouvelle réplique dans la bulle à chaque survol, en partant d'une au hasard.
+  document.querySelectorAll<HTMLElement>('[data-quips]').forEach((bubble) => {
+    const lines: string[] = JSON.parse(bubble.dataset.quips ?? '[]');
+    let next = Math.floor(Math.random() * lines.length);
+    const show = () => {
+      bubble.textContent = lines[next];
+      next = (next + 1) % lines.length;
+    };
+    show();
+    bubble.parentElement?.addEventListener('pointerenter', show);
+  });
 
   // Couvertures en 3D : la couverture s'incline vers la souris, comme un livre qu'on sort du rayon.
   // Seulement avec une souris, et pas si le visiteur a demandé de réduire les animations.
@@ -551,6 +611,225 @@ const stars = (n: number) => {
     100% {
       opacity: 0;
       transform: rotate(-32deg) scaleX(1);
+    }
+  }
+
+  /* Effet « éclipse » (Berserk) : au survol, la couverture s'assombrit et un cercle rouge se
+     resserre sur ses bords, une éclipse se lève au milieu, puis la couverture se met à trembler. */
+  .eclipse-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgb(0 0 0 / 0) 20%, rgb(80 0 0 / 0.9) 100%),
+      rgb(0 0 0 / 0.55);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .eclipse {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    width: 46%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    pointer-events: none;
+    background: #050505;
+    /* Couronne rouge autour du disque noir. */
+    box-shadow:
+      0 0 4px 2px rgb(255 70 50 / 0.95),
+      0 0 16px 6px rgb(200 0 0 / 0.7),
+      0 0 34px 12px rgb(140 0 0 / 0.45);
+    opacity: 0;
+    transform: translate(-50%, 10%) scale(0.6);
+    transition:
+      opacity 0.3s ease,
+      transform 0.4s ease-in;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='eclipse']:hover {
+      animation: tremble 0.14s linear 0.7s infinite;
+    }
+
+    [data-effect='eclipse']:hover .eclipse-veil {
+      opacity: 1;
+      transition-duration: 0.6s;
+    }
+
+    [data-effect='eclipse']:hover .eclipse {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      transition:
+        opacity 0.5s ease 0.1s,
+        transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s;
+    }
+  }
+
+  @keyframes tremble {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(-1px, 0.5px);
+    }
+    50% {
+      transform: translate(0.5px, -1px);
+    }
+    75% {
+      transform: translate(1px, 0.5px);
+    }
+  }
+
+  /* Effet « quatrième mur » (Deadpool) : au survol, la couverture pivote vers le visiteur
+     et une bulle de BD apparaît au-dessus, avec une réplique différente à chaque fois. */
+  [data-effect='fourth-wall'] {
+    overflow: visible;
+  }
+
+  [data-effect='fourth-wall'] .cover {
+    border-radius: 4px;
+  }
+
+  .bubble {
+    position: absolute;
+    right: 35%;
+    bottom: calc(100% + 12px);
+    width: max-content;
+    max-width: 11rem;
+    padding: 0.4rem 0.7rem;
+    border: 2px solid var(--text);
+    border-radius: 14px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.6);
+    transform-origin: 80% 100%;
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  /* Pointe de la bulle, tournée vers la couverture. */
+  .bubble::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    bottom: -9px;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid var(--text);
+    border-bottom: 2px solid var(--text);
+    background: var(--bg);
+    transform: skewX(25deg) rotate(45deg);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='fourth-wall']:hover {
+      z-index: 2;
+      transform: perspective(500px) rotateY(-18deg) scale(1.06);
+    }
+
+    [data-effect='fourth-wall']:hover .bubble {
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.2s ease 0.15s,
+        transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1) 0.15s;
+    }
+  }
+
+  /* Effet « pomme » (Death Note) : au survol, une pomme tombe sur la couverture, rebondit,
+     puis se fait croquer deux fois. Les bouchées sont des cercles retirés de la pomme par un
+     masque, dont le rayon s'agrandit (d'où les deux propriétés déclarées avec @property,
+     sans quoi le navigateur ne saurait pas animer leur valeur). */
+  @property --bite-1 {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+  }
+
+  @property --bite-2 {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+  }
+
+  .apple {
+    position: absolute;
+    /* Au-dessus du titre, côté droit, pour ne pas le cacher. */
+    left: 70%;
+    bottom: 22%;
+    width: 38%;
+    margin-left: -19%;
+    pointer-events: none;
+    opacity: 0;
+    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.4));
+    mask-image:
+      radial-gradient(circle at 100% 40%, transparent var(--bite-1), #000 calc(var(--bite-1) + 0.5px)),
+      radial-gradient(circle at 97% 66%, transparent var(--bite-2), #000 calc(var(--bite-2) + 0.5px));
+    mask-composite: intersect;
+  }
+
+  .apple svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='apple']:hover .apple {
+      animation:
+        apple-drop 0.9s both,
+        bite-1 0.12s ease-out 1.05s both,
+        bite-2 0.12s ease-out 1.45s both;
+    }
+  }
+
+  @keyframes apple-drop {
+    0% {
+      opacity: 1;
+      transform: translateY(-380%);
+      animation-timing-function: ease-in;
+    }
+    45% {
+      transform: none;
+      animation-timing-function: ease-out;
+    }
+    62% {
+      transform: translateY(-22%);
+      animation-timing-function: ease-in;
+    }
+    78% {
+      transform: none;
+      animation-timing-function: ease-out;
+    }
+    88% {
+      transform: translateY(-6%);
+      animation-timing-function: ease-in;
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes bite-1 {
+    to {
+      --bite-1: 6px;
+    }
+  }
+
+  @keyframes bite-2 {
+    to {
+      --bite-2: 5px;
     }
   }
 
