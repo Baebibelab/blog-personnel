@@ -1,0 +1,9 @@
+type: manga
+title: One Piece
+creator: Eiichirō Oda
+year: 1997
+progress: Tomes 1 à 112
+finished: 2026-09-16 # date de sortie du tome 113, à corriger
+rating: 5
+review: En pure masterclass depuis le tome 01 ? OUI.
+cover: ./covers/one-piece.jpg
