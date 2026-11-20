@@ -1,6 +1,6 @@
 # blog-personnel
 
-Mon site perso : journal de bord de mes projets, notes, étagère (livres, films, albums) et écoutes Jellyfin.
+Mon site perso : journal de bord de mes projets, notes, étagère (livres, mangas, films, séries, albums) et écoutes Jellyfin.
 
 Construit avec [Astro](https://astro.build), hébergé sur GitHub Pages : <https://romainbeal.fr>
 

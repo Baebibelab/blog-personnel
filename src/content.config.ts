@@ -58,15 +58,20 @@ const projects = defineCollection({
 // Étagère : un fichier YAML par œuvre, src/content/shelf/<slug>.yaml (voir _exemple.yaml)
 const shelf = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{yaml,yml}', base: './src/content/shelf' }),
-  schema: z.object({
-    type: z.enum(['book', 'film', 'album']),
-    title: z.string(),
-    creator: z.string(),
-    year: z.number().optional(),
-    rating: z.number().min(0).max(5).optional(),
-    finished: z.coerce.date(),
-    review: z.string().optional(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      type: z.enum(['book', 'manga', 'film', 'series', 'album']),
+      title: z.string(),
+      creator: z.string(),
+      year: z.number().optional(),
+      // Où tu en es pour une œuvre en plusieurs parties, par exemple « Tomes 1 à 22 » ou « Saisons 1 et 2 ».
+      progress: z.string().optional(),
+      rating: z.number().min(0).max(5).optional(),
+      finished: z.coerce.date(),
+      review: z.string().optional(),
+      // Image de couverture, chemin relatif au fichier YAML (ex. ./covers/dune.jpg).
+      cover: image().optional(),
+    }),
 });
 
 // Pages simples (À propos) : src/content/pages/fr/<slug>.md
