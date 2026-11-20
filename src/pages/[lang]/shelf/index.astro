@@ -110,24 +110,45 @@ const stars = (n: number) => {
 </Base>
 
 <script>
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Filtres. Quand le navigateur sait faire des « view transitions », les œuvres qui restent
+  // glissent jusqu'à leur nouvelle place, et les autres s'effacent au lieu de disparaître d'un coup.
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const works = document.querySelectorAll<HTMLElement>('[data-type]');
+  const years = document.querySelectorAll<HTMLElement>('[data-year]');
+  const animateFilters = 'startViewTransition' in document && !reduceMotion;
+
+  if (animateFilters) {
+    // Chaque élément animé a besoin d'un nom unique pour que le navigateur le suive.
+    works.forEach((li, i) => li.style.setProperty('view-transition-name', `work-${i}`));
+    years.forEach((section, i) =>
+      section.querySelector('h2')?.style.setProperty('view-transition-name', `year-${i}`),
+    );
+  }
+
+  const applyFilter = (filter: string | undefined) => {
+    works.forEach((li) => {
+      li.hidden = filter !== 'all' && li.dataset.type !== filter;
+    });
+    years.forEach((section) => {
+      section.hidden = !section.querySelector('[data-type]:not([hidden])');
+    });
+  };
+
   buttons.forEach((button) =>
     button.addEventListener('click', () => {
-      const filter = button.dataset.filter;
+      if (button.getAttribute('aria-pressed') === 'true') return;
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
-      document.querySelectorAll<HTMLElement>('[data-type]').forEach((li) => {
-        li.hidden = filter !== 'all' && li.dataset.type !== filter;
-      });
-      document.querySelectorAll<HTMLElement>('[data-year]').forEach((section) => {
-        section.hidden = !section.querySelector('[data-type]:not([hidden])');
-      });
+      const filter = button.dataset.filter;
+      if (animateFilters) document.startViewTransition(() => applyFilter(filter));
+      else applyFilter(filter);
     }),
   );
 
   // Couvertures en 3D : la couverture s'incline vers la souris, comme un livre qu'on sort du rayon.
   // Seulement avec une souris, et pas si le visiteur a demandé de réduire les animations.
   const canTilt = matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (canTilt && !reduceMotion) {
     const maxTilt = 14; // degrés
     document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((cover) => {
@@ -287,5 +308,39 @@ const stars = (n: number) => {
 
   li p {
     margin: 0.25rem 0;
+  }
+</style>
+
+<!-- Animations des filtres : les pseudo-éléments ::view-transition vivent à la racine du document,
+     hors de portée des styles de la page, d'où le bloc global. -->
+<style is:global>
+  /* Les œuvres qui restent glissent jusqu'à leur nouvelle place. */
+  ::view-transition-group(*) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Une œuvre qui apparaît monte légèrement en fondu. */
+  ::view-transition-new(*):only-child {
+    animation: shelf-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
+  }
+
+  /* Une œuvre qui s'en va rétrécit un peu en s'effaçant. */
+  ::view-transition-old(*):only-child {
+    animation: shelf-out 0.2s ease-in both;
+  }
+
+  @keyframes shelf-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+    }
+  }
+
+  @keyframes shelf-out {
+    to {
+      opacity: 0;
+      transform: scale(0.97);
+    }
   }
 </style>
