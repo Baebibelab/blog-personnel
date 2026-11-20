@@ -55,6 +55,23 @@ const projects = defineCollection({
   }),
 });
 
+// Date de fin d'une œuvre : un jour (2026-11-17), un mois (2025-05) ou une année seule (2015).
+const finishedDate = z
+  .union([z.date(), z.number().int(), z.string()])
+  .transform((value, ctx) => {
+    if (value instanceof Date) return { date: value, precision: 'day' as const };
+    const match = String(value).match(/^(\d{4})(?:-(\d{1,2})(?:-(\d{1,2}))?)?$/);
+    if (!match) {
+      ctx.addIssue({ code: 'custom', message: 'Date attendue : 2026-11-17, 2025-05 ou 2015' });
+      return z.NEVER;
+    }
+    const [, year, month, day] = match;
+    return {
+      date: new Date(Date.UTC(Number(year), month ? Number(month) - 1 : 0, day ? Number(day) : 1)),
+      precision: day ? ('day' as const) : month ? ('month' as const) : ('year' as const),
+    };
+  });
+
 // Étagère : un fichier YAML par œuvre, src/content/shelf/<slug>.yaml (voir _exemple.yaml)
 const shelf = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{yaml,yml}', base: './src/content/shelf' }),
@@ -67,11 +84,17 @@ const shelf = defineCollection({
       // Où tu en es pour une œuvre en plusieurs parties, par exemple « Tomes 1 à 22 » ou « Saisons 1 et 2 ».
       progress: z.string().optional(),
       rating: z.number().min(0).max(5).optional(),
-      finished: z.coerce.date(),
+      finished: finishedDate,
       review: z.string().optional(),
       // Image de couverture, chemin relatif au fichier YAML (ex. ./covers/dune.jpg).
       cover: image().optional(),
-    }),
+    })
+    // `finished` reste une date ; `finishedPrecision` dit s'il faut afficher le jour, le mois ou l'année.
+    .transform(({ finished, ...data }) => ({
+      ...data,
+      finished: finished.date,
+      finishedPrecision: finished.precision,
+    })),
 });
 
 // Pages simples (À propos) : src/content/pages/fr/<slug>.md

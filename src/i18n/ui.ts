@@ -66,10 +66,13 @@ export function isLang(value: string | undefined): value is Lang {
   return !!value && value in languages;
 }
 
-export function formatDate(date: Date, lang: Lang): string {
+export type DatePrecision = 'day' | 'month' | 'year';
+
+/** « 17 novembre 2026 », ou « mai 2025 » / « 2015 » quand on ne connaît que le mois ou l'année. */
+export function formatDate(date: Date, lang: Lang, precision: DatePrecision = 'day'): string {
   return date.toLocaleDateString(lang, {
-    day: 'numeric',
-    month: 'long',
+    day: precision === 'day' ? 'numeric' : undefined,
+    month: precision === 'year' ? undefined : 'long',
     year: 'numeric',
   });
 }
