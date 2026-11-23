@@ -96,8 +96,22 @@ const shelf = defineCollection({
       // eclipse : la couverture s'assombrit, une éclipse rouge se lève et elle se met à trembler.
       // fourth-wall : la couverture se tourne vers le visiteur et lui parle dans une bulle de BD.
       // apple : une pomme tombe sur la couverture, rebondit, puis se fait croquer deux fois.
+      // portal : un portail vert s'ouvre, aspire la couverture en tourbillonnant puis la recrache.
+      // snap : la couverture part en poussière comme après un claquement de doigts, puis se reforme.
+      // glyph : un cercle magique se dessine à l'encre sur la couverture, puis s'illumine.
       effect: z
-        .enum(['papercut', 'elastic', 'bullets', 'slash', 'eclipse', 'fourth-wall', 'apple'])
+        .enum([
+          'papercut',
+          'elastic',
+          'bullets',
+          'slash',
+          'eclipse',
+          'fourth-wall',
+          'apple',
+          'portal',
+          'snap',
+          'glyph',
+        ])
         .optional(),
     })
     // `finished` reste une date ; `finishedPrecision` dit s'il faut afficher le jour, le mois ou l'année.

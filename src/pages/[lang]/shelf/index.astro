@@ -37,6 +37,34 @@ const quips = [
   '4/5 ? Je vais faire semblant de ne pas avoir vu.',
   'Oui, je sais que je suis sur un site perso.',
 ];
+// Grains de poussière de l'effet snap : position de départ dans la couverture (en %),
+// puis distance parcourue en s'envolant (en px).
+const dust = [
+  [88, 12, 26, -30],
+  [80, 34, 34, -18],
+  [92, 52, 22, -36],
+  [74, 70, 38, -24],
+  [86, 88, 30, -12],
+  [62, 20, 30, -40],
+  [56, 46, 42, -26],
+  [66, 82, 34, -34],
+  [44, 28, 40, -20],
+  [38, 60, 46, -38],
+  [48, 90, 36, -16],
+  [24, 14, 44, -32],
+  [18, 44, 50, -22],
+  [28, 76, 40, -42],
+  [10, 92, 48, -28],
+  [8, 30, 54, -36],
+];
+// Moment où le front de poussière atteint un grain placé à x % du bord gauche : le front part
+// du bord droit à 0,24 s et traverse la couverture (de -35 % à 110 %) en 1,26 s (voir @keyframes snap).
+const dustDelay = (x: number) => (0.24 + ((100 - x + 35) / 145) * 1.26).toFixed(2);
+// Sommets du cercle magique de l'effet glyph : six petits cercles posés sur l'anneau.
+const runes = [0, 1, 2, 3, 4, 5].map((i) => {
+  const angle = ((i * 60 - 90) * Math.PI) / 180;
+  return [50 + 40 * Math.cos(angle), 50 + 40 * Math.sin(angle)].map((n) => n.toFixed(1));
+});
 ---
 
 <Base lang={lang} title={t(lang, 'shelf.title')} description={t(lang, 'shelf.intro')}>
@@ -176,6 +204,36 @@ const quips = [
                             />
                           </svg>
                         </span>
+                      )}
+                      {/* Portail : le disque vert, derrière la couverture qu'il aspire. */}
+                      {data.effect === 'portal' && <span class="portal" aria-hidden="true" />}
+                      {/* Claquement de doigts : les grains de poussière qui s'envolent. */}
+                      {data.effect === 'snap' &&
+                        dust.map(([x, y, dx, dy]) => (
+                          <span
+                            class="dust"
+                            style={`--x: ${x}%; --y: ${y}%; --dx: ${dx}px; --dy: ${dy}px; --delay: ${dustDelay(x)}s`}
+                            aria-hidden="true"
+                          />
+                        ))}
+                      {/* Cercle magique : chaque trait a une longueur ramenée à 1 (pathLength),
+                          pour pouvoir le dessiner avec le même décalage de tirets. */}
+                      {data.effect === 'glyph' && (
+                        <svg class="glyph" viewBox="0 0 100 100" aria-hidden="true">
+                          <circle cx="50" cy="50" r="45" pathLength="1" style="--i: 0" />
+                          <circle cx="50" cy="50" r="35" pathLength="1" style="--i: 1" />
+                          <path d="M50 15 80.3 67.5H19.7Z" pathLength="1" style="--i: 2" />
+                          <path d="M50 85 19.7 32.5H80.3Z" pathLength="1" style="--i: 3" />
+                          {runes.map(([cx, cy], i) => (
+                            <circle
+                              cx={cx}
+                              cy={cy}
+                              r="3.5"
+                              pathLength="1"
+                              style={`--i: ${4 + i * 0.25}`}
+                            />
+                          ))}
+                        </svg>
                       )}
                     </span>
                   )}
@@ -830,6 +888,242 @@ const quips = [
   @keyframes bite-2 {
     to {
       --bite-2: 5px;
+    }
+  }
+
+  /* Effet « portail » (Rick et Morty) : au survol, un portail vert s'ouvre derrière la
+     couverture et tourne sur lui-même ; la couverture y est aspirée en tourbillonnant, puis
+     ressort d'un coup. Ouverture et rotation passent par les propriétés `scale` et `rotate`,
+     qui s'animent séparément sans s'écraser l'une l'autre. */
+  [data-effect='portal'] {
+    overflow: visible;
+  }
+
+  [data-effect='portal'] .cover {
+    position: relative;
+    z-index: 1;
+    border-radius: 4px;
+  }
+
+  .portal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 130%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    pointer-events: none;
+    translate: -50% -50%;
+    scale: 0;
+    /* Spirale verte (dégradé conique) sous un cœur lumineux qui s'estompe vers les bords. */
+    background:
+      radial-gradient(circle, #f4ffd0 0 10%, rgb(190 255 90 / 0.7) 26%, rgb(60 170 40 / 0) 52%),
+      repeating-conic-gradient(from 0deg, #2f9e2a 0 22deg, #8fe01e 34deg, #2f9e2a 46deg);
+    mask-image: radial-gradient(circle, #000 52%, transparent 70%);
+    filter: drop-shadow(0 0 6px rgb(150 255 60 / 0.8));
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='portal']:hover {
+      z-index: 1;
+      box-shadow: none;
+    }
+
+    [data-effect='portal']:hover .portal {
+      animation:
+        portal-open 1.6s ease-out both,
+        portal-spin 0.9s linear infinite;
+    }
+
+    [data-effect='portal']:hover .cover {
+      animation: portal-suck 1.6s both;
+    }
+  }
+
+  @keyframes portal-open {
+    0% {
+      scale: 0;
+    }
+    18% {
+      scale: 1.05;
+    }
+    26%,
+    78% {
+      scale: 1;
+    }
+    100% {
+      scale: 0;
+    }
+  }
+
+  @keyframes portal-spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @keyframes portal-suck {
+    0%,
+    20% {
+      transform: none;
+      opacity: 1;
+      animation-timing-function: ease-in;
+    }
+    50% {
+      transform: scale(0) rotate(540deg);
+      opacity: 0.4;
+    }
+    62% {
+      transform: scale(0) rotate(540deg);
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.3, 1.6, 0.5, 1);
+    }
+    63% {
+      opacity: 1;
+    }
+    82%,
+    100% {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  /* Effet « claquement de doigts » (Marvel) : au survol, la couverture part en poussière de
+     droite à gauche et des grains s'envolent, puis elle se reforme. Le masque efface l'image
+     derrière un front qui avance (--dust), déclaré avec @property pour pouvoir l'animer. */
+  @property --dust {
+    syntax: '<percentage>';
+    inherits: true;
+    initial-value: -35%;
+  }
+
+  [data-effect='snap'] {
+    overflow: visible;
+  }
+
+  [data-effect='snap'] .cover {
+    border-radius: 4px;
+    mask-image: linear-gradient(to left, transparent var(--dust), #000 calc(var(--dust) + 30%));
+  }
+
+  .dust {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: 3px;
+    height: 3px;
+    border-radius: 1px;
+    background: #8d8a86;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .dust:nth-of-type(3n) {
+    background: #4e4c4a;
+  }
+
+  .dust:nth-of-type(3n + 1) {
+    background: #c4c0ba;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='snap']:hover {
+      z-index: 1;
+      box-shadow: none;
+      animation: snap 3s ease-in-out both;
+    }
+
+    /* Chaque grain part quand le front de poussière atteint sa position. */
+    [data-effect='snap']:hover .dust {
+      animation: dust-fly 0.9s ease-out var(--delay) both;
+    }
+  }
+
+  @keyframes snap {
+    0%,
+    8% {
+      --dust: -35%;
+    }
+    50%,
+    68% {
+      --dust: 110%;
+    }
+    100% {
+      --dust: -35%;
+    }
+  }
+
+  @keyframes dust-fly {
+    0% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--dx), var(--dy)) rotate(120deg) scale(0.4);
+    }
+  }
+
+  /* Effet « cercle magique » (L'Atelier des Sorciers) : au survol, un cercle magique se
+     dessine trait par trait à l'encre sur la couverture, comme tracé à la plume, puis
+     s'illumine d'une lumière dorée tant que la souris reste dessus. */
+  .glyph {
+    position: absolute;
+    left: 8%;
+    top: 50%;
+    width: 84%;
+    translate: 0 -50%;
+    overflow: visible;
+    pointer-events: none;
+    color: #0e2233;
+    filter: drop-shadow(0 0 1.5px rgb(255 255 255 / 0.9));
+  }
+
+  .glyph * {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    [data-effect='glyph']:hover {
+      z-index: 1;
+    }
+
+    [data-effect='glyph']:hover .glyph * {
+      animation: ink 0.35s ease-in-out calc(var(--i) * 0.22s) both;
+    }
+
+    [data-effect='glyph']:hover .glyph {
+      animation: glyph-glow 0.5s ease-out 1.6s both;
+    }
+
+    [data-effect='glyph']:hover .cover {
+      animation: glyph-light 0.5s ease-out 1.6s both;
+    }
+  }
+
+  @keyframes ink {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes glyph-glow {
+    to {
+      color: #fff5c8;
+      filter: drop-shadow(0 0 2px #ffe27a) drop-shadow(0 0 6px rgb(255 200 60 / 0.8));
+    }
+  }
+
+  @keyframes glyph-light {
+    to {
+      filter: brightness(1.15) saturate(1.2);
     }
   }
 

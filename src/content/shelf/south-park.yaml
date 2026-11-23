@@ -2,8 +2,8 @@ type: series
 title: South Park
 creator: Trey Parker et Matt Stone
 year: 1997
-progress: Saisons 1 à 28
-finished: 2026-11-06 # il y a deux semaines environ, à corriger
+progress: Saisons 1 à 28, saison 29 en cours
+finished: 2026-11-23 # dernière lecture, d'après Jellyfin
 rating: 4
 review: Heyyyyy détend-toi meeeec
 cover: ./covers/south-park.jpg
