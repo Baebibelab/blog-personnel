@@ -1,0 +1,6 @@
+type: film
+title: La Femme de ménage
+creator: Paul Feig
+year: 2025
+finished: 2026-02-15 # d'après Jellyfin
+cover: ./covers/la-femme-de-menage.jpg

@@ -1,0 +1,7 @@
+type: film
+title: The Truman Show
+creator: Peter Weir
+year: 1998
+finished: 2026-06-23 # d'après Jellyfin
+cover: ./covers/the-truman-show.jpg
+effect: spotlight

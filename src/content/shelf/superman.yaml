@@ -1,0 +1,6 @@
+type: film
+title: Superman
+creator: James Gunn
+year: 2025
+finished: 2025-08-28 # d'après Jellyfin
+cover: ./covers/superman.jpg

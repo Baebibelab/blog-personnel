@@ -1,0 +1,6 @@
+type: film
+title: The Gorge
+creator: Scott Derrickson
+year: 2025
+finished: 2025-12-13 # d'après Jellyfin
+cover: ./covers/the-gorge.jpg

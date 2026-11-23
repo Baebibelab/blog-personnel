@@ -1,0 +1,6 @@
+type: film
+title: Diversion
+creator: Glenn Ficarra et John Requa
+year: 2015
+finished: 2026-04-28 # d'après Jellyfin
+cover: ./covers/diversion.jpg

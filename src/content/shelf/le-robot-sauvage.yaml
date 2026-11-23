@@ -1,0 +1,6 @@
+type: film
+title: Le Robot sauvage
+creator: Chris Sanders
+year: 2024
+finished: 2024-12-22 # d'après Jellyfin
+cover: ./covers/le-robot-sauvage.jpg

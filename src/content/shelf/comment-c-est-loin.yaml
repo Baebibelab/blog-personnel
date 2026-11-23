@@ -1,0 +1,6 @@
+type: film
+title: Comment c'est loin
+creator: Orelsan et Christophe Offenstein
+year: 2015
+finished: 2025-12-02 # d'après Jellyfin
+cover: ./covers/comment-c-est-loin.jpg

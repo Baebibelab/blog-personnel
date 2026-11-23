@@ -1,0 +1,6 @@
+type: film
+title: "OSS 117 : Rio ne répond plus"
+creator: Michel Hazanavicius
+year: 2009
+finished: 2026-06-07 # d'après Jellyfin
+cover: ./covers/oss-117-rio-ne-repond-plus.jpg

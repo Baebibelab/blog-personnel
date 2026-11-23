@@ -1,0 +1,6 @@
+type: film
+title: Lilo & Stitch
+creator: Dean Fleischer Camp
+year: 2025
+finished: 2026-02-25 # d'après Jellyfin
+cover: ./covers/lilo-et-stitch.jpg

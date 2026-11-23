@@ -1,0 +1,6 @@
+type: film
+title: Le Comte de Monte-Cristo
+creator: Matthieu Delaporte et Alexandre de La Patellière
+year: 2024
+finished: 2026-08-02 # d'après Jellyfin
+cover: ./covers/le-comte-de-monte-cristo.jpg

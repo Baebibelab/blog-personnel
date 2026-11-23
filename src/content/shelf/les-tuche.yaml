@@ -1,0 +1,7 @@
+type: film
+title: Les Tuche
+creator: Olivier Baroux
+year: 2011
+progress: Les Tuche 1 à 3
+finished: 2024-12-27 # Les Tuche 3, d'après Jellyfin
+cover: ./covers/les-tuche.jpg

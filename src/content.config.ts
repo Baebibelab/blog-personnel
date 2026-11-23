@@ -99,6 +99,10 @@ const shelf = defineCollection({
       // portal : un portail vert s'ouvre, aspire la couverture en tourbillonnant puis la recrache.
       // snap : la couverture part en poussière comme après un claquement de doigts, puis se reforme.
       // glyph : un cercle magique se dessine à l'encre sur la couverture, puis s'illumine.
+      // upside-down : les lumières clignotent et la couverture bascule dans le Monde à l'envers.
+      // crack : un impact fissure la couverture comme un écran brisé.
+      // comet : une comète traverse la couverture et se scinde en deux, sous un ciel de crépuscule.
+      // spotlight : un projecteur tombe du ciel au pied de la couverture, qui passe à l'antenne.
       effect: z
         .enum([
           'papercut',
@@ -111,6 +115,10 @@ const shelf = defineCollection({
           'portal',
           'snap',
           'glyph',
+          'upside-down',
+          'crack',
+          'comet',
+          'spotlight',
         ])
         .optional(),
     })

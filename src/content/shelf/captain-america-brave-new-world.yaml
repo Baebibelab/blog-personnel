@@ -1,0 +1,6 @@
+type: film
+title: "Captain America : Brave New World"
+creator: Julius Onah
+year: 2025
+finished: 2025-08-31 # d'après Jellyfin
+cover: ./covers/captain-america-brave-new-world.jpg

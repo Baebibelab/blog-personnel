@@ -1,0 +1,6 @@
+type: film
+title: Beetlejuice Beetlejuice
+creator: Tim Burton
+year: 2024
+finished: 2024-12-25 # d'après Jellyfin
+cover: ./covers/beetlejuice-beetlejuice.jpg
