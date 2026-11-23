@@ -2,7 +2,9 @@ type: film
 title: Marvel Cinematic Universe
 creator: Marvel Studios
 year: 2008
-progress: "19 films dans l'ordre chronologique, de Captain America : First Avenger à Doctor Strange"
+progress: Série entière
 finished: 2026-11-19 # Doctor Strange, d'après Jellyfin
+rating: 4
+review: Super héro hé hé
 cover: ./covers/marvel.jpg
 effect: snap

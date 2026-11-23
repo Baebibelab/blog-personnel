@@ -2,6 +2,8 @@ type: film
 title: Qu'est-ce qu'on a fait au Bon Dieu ?
 creator: Philippe de Chauveron
 year: 2014
-progress: Le deuxième et le troisième films
+progress: Les 3 films
+rating: 3
+review: Mon dieu
 finished: 2025-11-16 # d'après Jellyfin
 cover: ./covers/bon-dieu.jpg
