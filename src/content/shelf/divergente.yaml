@@ -1,0 +1,9 @@
+type: film
+title: Divergente
+creator: Neil Burger et Robert Schwentke
+year: 2014
+progress: Divergente 1 et 2
+finished: 2025-12-15 # Divergente 2 ; le 3 semble vu en partie seulement, d'après Jellyfin
+rating: 2
+review: Bof
+cover: ./covers/divergente.jpg

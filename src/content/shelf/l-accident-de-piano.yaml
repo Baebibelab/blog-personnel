@@ -1,0 +1,8 @@
+type: film
+title: L'Accident de piano
+creator: Quentin Dupieux
+year: 2025
+finished: 2026-03-29 # d'après Jellyfin
+rating: 3.5
+review: Kling klong dans sa gueule
+cover: ./covers/l-accident-de-piano.jpg

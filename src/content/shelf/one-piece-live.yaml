@@ -1,0 +1,9 @@
+type: series
+title: One Piece (série)
+creator: Matt Owens et Steven Maeda
+year: 2023
+progress: Saison 2
+finished: 2026-04-12 # la saison 1 a peut-être été vue avant le début des logs, d'après Jellyfin
+rating: 3.5
+review: Mieux que mes attentes !
+cover: ./covers/one-piece-live.jpg

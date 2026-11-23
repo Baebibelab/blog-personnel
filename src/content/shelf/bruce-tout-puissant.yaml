@@ -1,0 +1,9 @@
+type: film
+title: Bruce tout-puissant
+creator: Tom Shadyac
+year: 2003
+progress: Bruce tout-puissant et Evan tout-puissant
+finished: 2025-12-07 # Evan tout-puissant, d'après Jellyfin
+rating: 4
+review: Super trop top
+cover: ./covers/bruce-tout-puissant.jpg

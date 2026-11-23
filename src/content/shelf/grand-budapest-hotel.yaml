@@ -2,6 +2,7 @@ type: film
 title: The Grand Budapest Hotel
 creator: Wes Anderson
 year: 2014
-finished: 2026-03
-rating: 4
+finished: 2026-07-21 # dernière lecture, d'après Jellyfin
+rating: 4.5
+review: "Grosse surprise : j'ai adoré !!"
 cover: ./covers/grand-budapest-hotel.jpg

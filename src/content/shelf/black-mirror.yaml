@@ -1,0 +1,10 @@
+type: series
+title: Black Mirror
+creator: Charlie Brooker
+year: 2011
+progress: Saison 1 à Saison 7
+finished: 2025-07-04 # d'après Jellyfin
+rating: 4
+review: Le futur c'est moche
+cover: ./covers/black-mirror.jpg
+effect: crack

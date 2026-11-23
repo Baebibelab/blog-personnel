@@ -1,0 +1,7 @@
+type: film
+title: Your Name.
+creator: Makoto Shinkai
+year: 2016
+finished: 2025-04-07 # d'après Jellyfin
+cover: ./covers/your-name.jpg
+effect: comet

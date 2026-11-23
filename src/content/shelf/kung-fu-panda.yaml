@@ -1,0 +1,9 @@
+type: film
+title: Kung Fu Panda
+creator: Mark Osborne et John Stevenson
+year: 2008
+finished: 2026-04-11 # d'après Jellyfin
+rating: 4.5
+review: Super trop top
+cover: ./covers/kung-fu-panda.jpg
+effect: skadoosh

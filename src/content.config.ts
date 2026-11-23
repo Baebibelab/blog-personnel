@@ -96,8 +96,48 @@ const shelf = defineCollection({
       // eclipse : la couverture s'assombrit, une éclipse rouge se lève et elle se met à trembler.
       // fourth-wall : la couverture se tourne vers le visiteur et lui parle dans une bulle de BD.
       // apple : une pomme tombe sur la couverture, rebondit, puis se fait croquer deux fois.
+      // portal : un portail vert s'ouvre, aspire la couverture en tourbillonnant puis la recrache.
+      // snap : la couverture part en poussière comme après un claquement de doigts, puis se reforme.
+      // glyph : un cercle magique se dessine à l'encre sur la couverture, puis s'illumine.
+      // upside-down : les lumières clignotent et la couverture bascule dans le Monde à l'envers.
+      // crack : un impact fissure la couverture comme un écran brisé.
+      // comet : une comète traverse la couverture et se scinde en deux, sous un ciel de crépuscule.
+      // spotlight : un projecteur tombe du ciel au pied de la couverture, qui passe à l'antenne.
+      // domain : les ténèbres se referment sur la couverture (extension du territoire), puis un éclair noir la frappe.
+      // web : une toile d'araignée se tisse depuis le coin, et la couverture se fait tirer vers le haut.
+      // split-screen : la couverture se découpe en trois bandes façon générique des années 60.
+      // cipher : la couverture vire au jaune et un triangle à l'œil unique apparaît, puis cligne.
+      // skadoosh : la couverture se fige, puis une onde de choc dorée part en anneau.
+      // water : une vague bleue de souffle de l'eau tourbillonne à travers la couverture.
+      // parachute : un parachutiste descend en se balançant et atterrit sur la couverture.
+      // bat-signal : la nuit tombe sous la pluie et un signal de chauve-souris s'allume dans le ciel.
+      // ufo : une soucoupe volante arrive et aspire la couverture dans son rayon, puis la relâche.
       effect: z
-        .enum(['papercut', 'elastic', 'bullets', 'slash', 'eclipse', 'fourth-wall', 'apple'])
+        .enum([
+          'papercut',
+          'elastic',
+          'bullets',
+          'slash',
+          'eclipse',
+          'fourth-wall',
+          'apple',
+          'portal',
+          'snap',
+          'glyph',
+          'upside-down',
+          'crack',
+          'comet',
+          'spotlight',
+          'domain',
+          'web',
+          'split-screen',
+          'cipher',
+          'skadoosh',
+          'water',
+          'parachute',
+          'bat-signal',
+          'ufo',
+        ])
         .optional(),
     })
     // `finished` reste une date ; `finishedPrecision` dit s'il faut afficher le jour, le mois ou l'année.

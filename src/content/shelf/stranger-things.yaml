@@ -1,0 +1,8 @@
+type: series
+title: Stranger Things
+creator: Matt et Ross Duffer
+year: 2016
+progress: Saisons 1 à 5
+finished: 2026-01-27 # d'après Jellyfin
+cover: ./covers/stranger-things.jpg
+effect: upside-down

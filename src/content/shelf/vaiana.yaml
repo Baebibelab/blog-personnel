@@ -1,0 +1,7 @@
+type: film
+title: Vaiana
+creator: Ron Clements et John Musker
+year: 2016
+progress: Vaiana 1 et 2
+finished: 2026-03-11 # Vaiana 2, d'après Jellyfin
+cover: ./covers/vaiana.jpg
