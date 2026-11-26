@@ -4,7 +4,7 @@ date: 2026-11-25
 tags: [films, marvel]
 ---
 
-Tous les films du MCU dans l'ordre de l'histoire, selon la chronologie officielle de Disney+ (mise à jour d'octobre 2026). Les films seulement, sans les séries.
+Liste chronologique de visionnage des films du MCU (selon les boloss de disney+, pourquoi tu les insultes ? Je les ai pas insulté ??)
 
 <div class="poster-grid">
 
