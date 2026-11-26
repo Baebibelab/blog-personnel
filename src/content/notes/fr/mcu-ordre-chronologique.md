@@ -4,7 +4,7 @@ date: 2026-11-25
 tags: [films, marvel]
 ---
 
-Liste chronologique de visionnage des films du MCU (selon les boloss de disney+, pourquoi tu les insultes ? Je les ai pas insulté ??)
+Liste chronologique de visionnage des films du MCU (selon les boloss de Disney+, pourquoi tu les insultes ? Je les ai pas insultés ??)
 
 <div class="poster-grid">
 
