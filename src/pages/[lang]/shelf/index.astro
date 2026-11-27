@@ -633,6 +633,11 @@ const strips = [
     min-width: 0;
   }
 
+  /* La date va toujours à la ligne, même sans note ni avis pour la séparer du titre. */
+  .body time {
+    display: block;
+  }
+
   .cover-tilt {
     position: relative;
     flex-shrink: 0;
