@@ -49,4 +49,4 @@ Liste chronologique de visionnage des films du MCU (selon les boloss de Disney+,
 
 </div>
 
-*Les 4 Fantastiques : Premiers pas* se passe dans les années 60, mais sur une autre Terre : Disney+ le place à la fin. *Spider-Man : Brand New Day*, sorti en juillet 2026, n'est pas encore dans la liste officielle. Je l'ai mis en dernier, en attendant.
+*Les 4 Fantastiques : Premiers pas* se passe dans les années 60, mais sur une autre Terre : Disney+ le place à la fin. *Spider-Man : Brand New Day*, sorti en juillet 2026, pas encore dans la liste officielle.
