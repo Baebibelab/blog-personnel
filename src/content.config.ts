@@ -104,7 +104,6 @@ const shelf = defineCollection({
       // comet : une comète traverse la couverture et se scinde en deux, sous un ciel de crépuscule.
       // spotlight : un projecteur tombe du ciel au pied de la couverture, qui passe à l'antenne.
       // domain : les ténèbres se referment sur la couverture (extension du territoire), puis un éclair noir la frappe.
-      // web : une toile d'araignée se tisse depuis le coin, et la couverture se fait tirer vers le haut.
       // split-screen : la couverture se découpe en trois bandes façon générique des années 60.
       // cipher : la couverture vire au jaune et un triangle à l'œil unique apparaît, puis cligne.
       // skadoosh : la couverture se fige, puis une onde de choc dorée part en anneau.
@@ -129,7 +128,6 @@ const shelf = defineCollection({
           'comet',
           'spotlight',
           'domain',
-          'web',
           'split-screen',
           'cipher',
           'skadoosh',
